@@ -44,7 +44,7 @@ import {InputComponent} from '../common/components/input.component';
 
         <div class="mt-6 text-center space-y-2">
 
-          <div class="text-sm text-gray-500">
+          <div class="text-sm">
             Back to login
             <app-button
               variant="ghost"

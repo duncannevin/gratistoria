@@ -62,13 +62,12 @@ import {InputComponent} from '../common/components/input.component';
           <app-button
             size="sm"
             variant="link"
-            className="text-gray-500"
             href="/auth/forgot-password"
           >
             Forgot your password?
           </app-button>
 
-          <div class="text-sm text-gray-500">
+          <div class="text-sm">
             Don't have an account?
             <app-button
               variant="ghost"

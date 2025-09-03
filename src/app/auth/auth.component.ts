@@ -38,7 +38,7 @@ export interface SignUpPayload {
     <div class="w-full max-w-md">
       <div class="text-center mb-8">
         <h1 class="text-3xl text-primary mb-2">Gratistoria</h1>
-        <p class="text-gray-500">Your daily gratitude, woven into beautiful stories</p>
+        <p>Your daily gratitude, woven into beautiful stories</p>
       </div>
       <router-outlet></router-outlet>
     </div>

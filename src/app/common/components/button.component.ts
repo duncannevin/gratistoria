@@ -3,11 +3,11 @@ import {CommonModule} from '@angular/common';
 
 export const BUTTON_VARIANTS = {
   default: "bg-primary text-primary-foreground hover:bg-primary/90",
-  destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-  outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-  ghost: "hover:bg-accent text-primary hover:text-accent-foreground hover:underline",
-  link: "text-sm text-muted-foreground hover:text-foreground underline",
+  destructive: "bg-destructive text-destructive-foreground",
+  outline: "border border-input bg-background hover:bg-accent",
+  secondary: "bg-secondary text-secondary-foreground",
+  ghost: "text-primary hover:underline",
+  link: "text-sm text-muted-foreground underline",
 } as const;
 
 export type ButtonVariant = keyof typeof BUTTON_VARIANTS;

@@ -62,7 +62,6 @@ import {InputComponent} from '../common/components/input.component';
           <app-button
             size="sm"
             variant="link"
-            className="text-gray-500"
             href="/auth/forgot-password"
           >
             Back to forgot password

@@ -4,13 +4,96 @@
 
 @layer base {
   :root {
-    /* make primary black */
+    /* cool off-white background */
+    --background: 210 40% 98%;
+    --foreground: 240 10% 3.9%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: var(--background);
+    --popover-foreground: var(--foreground);
+
+    /* use HSL components (not hex) so bg-card works */
+    --card: 0 0% 100%;
+    --card-foreground: var(--foreground);
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 215 20.2% 65.1%;
+
+    /* your request */
     --primary: 0 0% 0%;
     --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --radius: 0.5rem;
   }
+
   .dark {
-    /* optional dark theme inversion */
+    --background: 222.2 47.4% 11.2%;
+    --foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --popover: 222.2 47.4% 11.2%;
+    --popover-foreground: 210 40% 98%;
+
+    --card: 222.2 47.4% 13%;
+    --card-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 215 20.2% 65.1%;
+
+    /* inverted primary */
     --primary: 0 0% 100%;
     --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
   }
+
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground antialiased; color-scheme: light; }
+  .dark body { color-scheme: dark; }
+
+  /* === Typography === */
+  h1, h2, h3, h4, h5, h6 { @apply font-semibold tracking-tight text-balance; }
+  h1 { @apply text-3xl md:text-4xl lg:text-5xl; }
+  h2 { @apply text-2xl md:text-3xl; }
+  h3 { @apply text-xl md:text-2xl; }
+  h4 { @apply text-lg; }
+
+  p { @apply leading-7; }
+  .lead { @apply text-lg text-muted-foreground; }
+  small, .small { @apply text-xs text-muted-foreground; }
+
+  a { @apply text-primary; }
+  strong { @apply font-semibold; }
+
+  code { @apply rounded bg-muted px-1.5 py-0.5 font-mono text-sm; }
+  pre { @apply rounded-lg bg-muted p-4 overflow-x-auto; }
+  blockquote { @apply mt-6 border-l-2 pl-6 italic text-muted-foreground; }
+  hr { @apply my-6 border-border; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
 }

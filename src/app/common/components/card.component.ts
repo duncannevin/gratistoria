@@ -25,10 +25,10 @@ import {CommonModule} from '@angular/common';
 })
 export class CardComponent {
   @Input() className = ''
-  private baseClass = 'max-w-sm mx-auto p-6 rounded-2xl shadow border border-gray-200 bg-white';
+  private baseClass = 'bg-card max-w-sm mx-auto p-6 rounded-2xl shadow border border-gray-200';
 
   get class() {
-    return this.baseClass + ' ' + this.baseClass;
+    return this.baseClass + ' ' + this.className;
   }
 }
 
@@ -67,7 +67,7 @@ export class CardTitleComponent {
   private baseClass = 'space-y-1.5 font-semibold leading-none tracking-tight';
 
   get class() {
-    return this.baseClass + ' ' + this.baseClass;
+    return this.baseClass + ' ' + this.className;
   }
 }
 
@@ -83,7 +83,7 @@ export class CardTitleComponent {
 })
 export class CardDescriptionComponent {
   @Input() className = ''
-  private baseClass = 'pt-3 text-center text-sm text-gray-500';
+  private baseClass = 'pt-3 text-center text-sm';
 
   get class() {
     return this.baseClass + ' ' + this.baseClass;
