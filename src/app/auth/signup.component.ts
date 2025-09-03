@@ -4,7 +4,6 @@ import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
-import {Router} from '@angular/router';
 
 @Component({
   standalone: true,
@@ -120,7 +119,7 @@ export class SignupComponent {
 
   form: FormGroup;
 
-  constructor(private readonly fb: FormBuilder, private readonly router: Router) {
+  constructor(private readonly fb: FormBuilder) {
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],

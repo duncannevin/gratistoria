@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
-import {Router} from '@angular/router';
 
 @Component({
   standalone: true,
@@ -79,7 +78,7 @@ export class ConfirmationCodeComponent {
 
   form: FormGroup;
 
-  constructor(private readonly fb: FormBuilder, private readonly router: Router) {
+  constructor(private readonly fb: FormBuilder) {
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
       code: ['', [Validators.required]],
