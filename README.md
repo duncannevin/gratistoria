@@ -1,59 +1,40 @@
 # Gratistoria
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.7.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.2.
+
+## Setting a certificate for HTTPS
+
+To enable HTTPS for local development, follow these steps:
+
+1. Install `mkcert` by following the instructions at [mkcert GitHub](https://github.com/FiloSottile/mkcert).
+2. Run `mkcert -install` to set up a local CA (Certificate Authority).
+3. Generate certificates by running:
+   ```
+   > cd certs
+   > mkcert localhost.gratistoria.com 
+   ```
+   This will create the `localhost.gratistoria.com.pem` and `localhost.gratistoria.com-key.pem` files in the `certs` directory.
 
 ## Development server
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Run `npm start` for a dev server. Navigate to `https://localhost.gratistoria.com:4200/`. This runs `make start` which uses `ng serve` with all the appropriate settings to run secure locally.
 
 ## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-```bash
-ng generate component component-name
-```
+## Build
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-```bash
-ng e2e
-```
+## Further help
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

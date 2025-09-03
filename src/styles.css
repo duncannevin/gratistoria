@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* make primary black */
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+  }
+  .dark {
+    /* optional dark theme inversion */
+    --primary: 0 0% 100%;
+    --primary-foreground: 240 5.9% 10%;
+  }
+}
