@@ -45,13 +45,12 @@ export class CardComponent {
 })
 export class CardHeaderComponent {
   @Input() className = ''
-  private baseClass = 'flex flex-col items-center space-y-1.5 font-semibold leading-none tracking-tight';
+  private baseClass = 'flex flex-col items-center';
 
   get class() {
     return this.baseClass + ' ' + this.baseClass;
   }
 }
-
 
 @Component({
   selector: 'app-card-title',
@@ -65,7 +64,26 @@ export class CardHeaderComponent {
 })
 export class CardTitleComponent {
   @Input() className = ''
-  private baseClass = 'text-center text-sm text-gray-500';
+  private baseClass = 'space-y-1.5 font-semibold leading-none tracking-tight';
+
+  get class() {
+    return this.baseClass + ' ' + this.baseClass;
+  }
+}
+
+@Component({
+  selector: 'app-card-description',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    <p [ngClass]="class">
+      <ng-content></ng-content>
+    </p>
+  `,
+})
+export class CardDescriptionComponent {
+  @Input() className = ''
+  private baseClass = 'pt-3 text-center text-sm text-gray-500';
 
   get class() {
     return this.baseClass + ' ' + this.baseClass;
@@ -113,6 +131,7 @@ export class CardFooterComponent {
 
 export const Card = [
   CardComponent,
+  CardDescriptionComponent,
   CardHeaderComponent,
   CardTitleComponent,
   CardContentComponent,

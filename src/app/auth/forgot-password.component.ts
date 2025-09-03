@@ -12,10 +12,10 @@ import {Router} from '@angular/router';
   template: `
     <app-card>
       <app-card-header className="text-center">
-        <app-card-header>Reset your password</app-card-header>
-        <app-card-title>
+        <app-card-title>Reset your password</app-card-title>
+        <app-card-description>
           Enter your email address and we'll send you a reset link
-        </app-card-title>
+        </app-card-description>
       </app-card-header>
 
       <app-card-content>

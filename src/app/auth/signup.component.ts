@@ -12,10 +12,10 @@ import {Router} from '@angular/router';
   template: `
     <app-card>
       <app-card-header className="text-center">
-        <app-card-header>Create your account</app-card-header>
-        <app-card-title>
+        <app-card-title>Create your account</app-card-title>
+        <app-card-description>
           Join Gratistoria and start your daily gratitude practice
-        </app-card-title>
+        </app-card-description>
       </app-card-header>
 
       <app-card-content>

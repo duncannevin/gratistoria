@@ -12,10 +12,10 @@ import {Router} from '@angular/router';
   template: `
     <app-card>
       <app-card-header className="text-center">
-        <app-card-header>Welcome back</app-card-header>
-        <app-card-title>
+        <app-card-title>Welcome back</app-card-title>
+        <app-card-description>
           Sign in to continue your gratitude journey
-        </app-card-title>
+        </app-card-description>
       </app-card-header>
 
       <app-card-content>

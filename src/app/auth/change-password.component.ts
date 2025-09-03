@@ -1,10 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {Component, Input} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
-import {Router} from '@angular/router';
 
 @Component({
   standalone: true,
@@ -12,9 +11,9 @@ import {Router} from '@angular/router';
   template: `
     <app-card>
       <app-card-header className="text-center">
-        <app-card-title>Confirm your email</app-card-title>
+        <app-card-title>Change your password</app-card-title>
         <app-card-description>
-          Enter your email and the code to confirm
+          Strong passwords keep your account safe. It only takes a minute.
         </app-card-description>
       </app-card-header>
 
@@ -39,6 +38,23 @@ import {Router} from '@angular/router';
 
           <div class="space-y-2">
             <app-input
+              formControlName="password"
+              id="password"
+              name="password"
+              type="password"
+              [required]="true"
+              placeholder="••••••••"
+              label="Password"
+              [errorText]="
+                form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty)
+                  ? 'Please enter a valid password.'
+                  : undefined
+              "
+            ></app-input>
+          </div>
+
+          <div class="space-y-2">
+            <app-input
               formControlName="code"
               id="code"
               name="code"
@@ -54,36 +70,48 @@ import {Router} from '@angular/router';
             ></app-input>
           </div>
 
-          <app-button type="submit" variant="default" size="md" className="w-full" [disabled]="isLoading || form.invalid">
-            {{ isLoading ? 'Signing in...' : 'Sign in' }}
+          <div *ngIf="error" class="text-destructive text-sm text-center">
+            {{ error }}
+          </div>
+
+          <app-button type="submit" variant="default" size="md" className="w-full"
+                      [disabled]="isLoading || form.invalid">
+            {{ isLoading ? 'Creating account...' : 'Create account' }}
           </app-button>
         </form>
 
         <div class="mt-6 text-center space-y-2">
-          <app-button
-            size="sm"
-            variant="link"
-            className="text-gray-500"
-            href="/auth/forgot-password"
-          >
-            Back to forgot password
-          </app-button>
+
+          <div class="text-sm text-gray-500">
+            Already have an account?
+            <app-button
+              variant="ghost"
+              href="/auth/login"
+            >
+              Sign in
+            </app-button>
+          </div>
         </div>
       </app-card-content>
     </app-card>
   `,
 })
-export class ConfirmationCodeComponent {
+export class ChangePasswordComponent {
   @Input() error: string | null = null;
   @Input() isLoading = false;
 
   form: FormGroup;
 
-  constructor(private readonly fb: FormBuilder, private readonly router: Router) {
+  constructor(private readonly fb: FormBuilder) {
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
       code: ['', [Validators.required]],
-    })
+      password: ['', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
+      ]],
+    });
   }
 
   onSubmit() {
@@ -92,7 +120,7 @@ export class ConfirmationCodeComponent {
     this.isLoading = true;
 
     setTimeout(() => {
-      console.log('CONFIRMATION CODE FORM:', this.form.value);
+      console.log('SIGN UP FORM:', this.form.value);
       this.isLoading = false;
     }, 800);
   }

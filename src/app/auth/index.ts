@@ -10,6 +10,7 @@ export const routes: Routes = [
       { path: 'signup', loadComponent: () => import('./signup.component').then(c => c.SignupComponent) },
       { path: 'forgot-password', loadComponent: () => import('./forgot-password.component').then(c => c.ForgotPasswordComponent) },
       { path: 'confirmation-code', loadComponent: () => import('./confirmation-code.component').then(c => c.ConfirmationCodeComponent) },
+      { path: 'change-password', loadComponent: () => import('./change-password.component').then(c => c.ChangePasswordComponent) },
     ],
   },
 ];
