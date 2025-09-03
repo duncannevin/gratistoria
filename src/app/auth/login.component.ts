@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
+import {Router} from '@angular/router';
 
 @Component({
   standalone: true,
@@ -64,7 +65,6 @@ import {InputComponent} from '../common/components/input.component';
 
         <div class="mt-6 text-center space-y-2">
           <app-button
-            (click)="onSwitchToForgotPassword()"
             size="sm"
             variant="link"
             className="text-gray-500"
@@ -75,8 +75,8 @@ import {InputComponent} from '../common/components/input.component';
           <div class="text-sm text-gray-500">
             Don't have an account?
             <app-button
-              (click)="onSwitchToSignup()"
               variant="ghost"
+              href="/auth/signup"
             >
               Sign up
             </app-button>
@@ -90,13 +90,9 @@ export class LoginComponent {
   @Input() error: string | null = null;
   @Input() isLoading = false;
 
-  @Output() submitCredentials = new EventEmitter<{ email: string; password: string }>();
-  @Output() switchToForgotPassword = new EventEmitter<void>();
-  @Output() switchToSignup = new EventEmitter<void>();
-
   form: FormGroup;
 
-  constructor(private readonly fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder, private readonly router: Router) {
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -112,13 +108,5 @@ export class LoginComponent {
       console.log('SIGN IN FORM:', this.form.value);
       this.isLoading = false;
     }, 800);
-  }
-
-  onSwitchToForgotPassword() {
-    this.switchToForgotPassword.emit();
-  }
-
-  onSwitchToSignup() {
-    this.switchToSignup.emit();
   }
 }
