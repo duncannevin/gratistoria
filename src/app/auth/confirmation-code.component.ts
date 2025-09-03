@@ -12,9 +12,9 @@ import {Router} from '@angular/router';
   template: `
     <app-card>
       <app-card-header className="text-center">
-        <app-card-header>Welcome back</app-card-header>
+        <app-card-header>Confirm your email</app-card-header>
         <app-card-title>
-          Sign in to continue your gratitude journey
+          Enter your email and the code to confirm
         </app-card-title>
       </app-card-header>
 
@@ -39,16 +39,16 @@ import {Router} from '@angular/router';
 
           <div class="space-y-2">
             <app-input
-              formControlName="password"
-              id="password"
-              name="password"
-              type="password"
+              formControlName="code"
+              id="code"
+              name="code"
+              type="text"
               [required]="true"
-              placeholder="••••••••"
-              label="Password"
+              placeholder="123456"
+              label="Code"
               [errorText]="
-                form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty)
-                  ? 'Please enter a valid password.'
+                form.get('code')?.invalid && (form.get('code')?.touched || form.get('code')?.dirty)
+                  ? 'Code is required.'
                   : undefined
               "
             ></app-input>
@@ -66,24 +66,14 @@ import {Router} from '@angular/router';
             className="text-gray-500"
             href="/auth/forgot-password"
           >
-            Forgot your password?
+            Back to forgot password
           </app-button>
-
-          <div class="text-sm text-gray-500">
-            Don't have an account?
-            <app-button
-              variant="ghost"
-              href="/auth/signup"
-            >
-              Sign up
-            </app-button>
-          </div>
         </div>
       </app-card-content>
     </app-card>
   `,
 })
-export class LoginComponent {
+export class ConfirmationCodeComponent {
   @Input() error: string | null = null;
   @Input() isLoading = false;
 
@@ -92,7 +82,7 @@ export class LoginComponent {
   constructor(private readonly fb: FormBuilder, private readonly router: Router) {
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      code: ['', [Validators.required]],
     })
   }
 
@@ -102,7 +92,7 @@ export class LoginComponent {
     this.isLoading = true;
 
     setTimeout(() => {
-      console.log('SIGN IN FORM:', this.form.value);
+      console.log('CONFIRMATION CODE FORM:', this.form.value);
       this.isLoading = false;
     }, 800);
   }
