@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {Component, Input} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
@@ -12,9 +12,9 @@ import {Router} from '@angular/router';
   template: `
     <app-card>
       <app-card-header className="text-center">
-        <app-card-header>Welcome back</app-card-header>
+        <app-card-header>Reset your password</app-card-header>
         <app-card-title>
-          Sign in to continue your gratitude journey
+          Enter your email address and we'll send you a reset link
         </app-card-title>
       </app-card-header>
 
@@ -37,49 +37,21 @@ import {Router} from '@angular/router';
             ></app-input>
           </div>
 
-          <div class="space-y-2">
-            <app-input
-              formControlName="password"
-              id="password"
-              name="password"
-              type="password"
-              [required]="true"
-              placeholder="••••••••"
-              label="Password"
-              [errorText]="
-                form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty)
-                  ? 'Please enter a valid password.'
-                  : undefined
-              "
-            ></app-input>
-          </div>
-
-          <div *ngIf="error" class="text-destructive text-sm text-center">
-            {{ error }}
-          </div>
-
-          <app-button type="submit" variant="default" size="md" className="w-full" [disabled]="isLoading || form.invalid">
-            {{ isLoading ? 'Signing in...' : 'Sign in' }}
+          <app-button type="submit" variant="default" size="md" className="w-full"
+                      [disabled]="isLoading || form.invalid">
+            {{ isLoading ? 'Sending email...' : 'Submit' }}
           </app-button>
         </form>
 
         <div class="mt-6 text-center space-y-2">
-          <app-button
-            size="sm"
-            variant="link"
-            className="text-gray-500"
-            href="/auth/forgot-password"
-          >
-            Forgot your password?
-          </app-button>
 
           <div class="text-sm text-gray-500">
-            Don't have an account?
+            Back to login
             <app-button
               variant="ghost"
-              href="/auth/signup"
+              href="/auth/login"
             >
-              Sign up
+              Sign in
             </app-button>
           </div>
         </div>
@@ -87,7 +59,7 @@ import {Router} from '@angular/router';
     </app-card>
   `,
 })
-export class LoginComponent {
+export class ForgotPasswordComponent {
   @Input() error: string | null = null;
   @Input() isLoading = false;
 
@@ -96,8 +68,7 @@ export class LoginComponent {
   constructor(private readonly fb: FormBuilder, private readonly router: Router) {
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-    })
+    });
   }
 
   onSubmit() {
@@ -106,7 +77,7 @@ export class LoginComponent {
     this.isLoading = true;
 
     setTimeout(() => {
-      console.log('SIGN IN FORM:', this.form.value);
+      console.log('Forgot password FORM:', this.form.value);
       this.isLoading = false;
     }, 800);
   }
