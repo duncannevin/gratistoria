@@ -17,10 +17,10 @@ export class BadgeComponent {
   @Input() className = '';
 
   get badgeClasses(): string {
-    const baseClasses = 'inline-flex items-center rounded-full border';
+    const baseClasses = 'inline-flex items-center rounded-full';
     const variantClasses: Record<string, string> = {
-      default: 'border-neutral-200 bg-neutral-50 text-neutral-800 text-xs px-2.5 py-1',
-      secondary: 'border-secondary-200 bg-secondary-50 text-neutral-800 text-xs px-2.5 py-1',
+      default: 'border-neutral-200 bg-muted font-semibold text-xs px-2.5 py-1',
+      secondary: 'border-secondary-200 bg-secondary-50 font-semibold text-xs px-2.5 py-1',
       destructive: 'border-transparent bg-destructive text-white hover:bg-destructive90 focus-visible:ring-destructive20 dark:focus-visible:ring-destructive40 dark:bg-destructive60',
       outline: 'text-foreground hover:bg-accent hover:text-accent-foreground'
     };

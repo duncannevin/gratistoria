@@ -25,7 +25,7 @@ import {CommonModule} from '@angular/common';
 })
 export class CardComponent {
   @Input() className = ''
-  private baseClass = 'bg-card max-w-sm mx-auto p-6 rounded-2xl shadow border border-gray-200';
+  private baseClass = 'bg-card w-[542px] max-w-full mx-auto p-6 rounded-2xl shadow border border-gray-200';
 
   get class() {
     return this.baseClass + ' ' + this.className;
@@ -77,13 +77,13 @@ export class CardTitleComponent {
   imports: [CommonModule],
   template: `
     <p [ngClass]="class">
-      <ng-content></ng-content>
+        <ng-content></ng-content>
     </p>
   `,
 })
 export class CardDescriptionComponent {
   @Input() className = ''
-  private baseClass = 'pt-3 text-center text-sm';
+  private baseClass = 'pt-3 text-sm';
 
   get class() {
     return this.baseClass + ' ' + this.baseClass;
