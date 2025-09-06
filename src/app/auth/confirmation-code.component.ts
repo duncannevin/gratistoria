@@ -53,20 +53,23 @@ import {InputComponent} from '../common/components/input.component';
             ></app-input>
           </div>
 
-          <app-button type="submit" variant="default" size="md" className="w-full" [disabled]="isLoading || form.invalid">
-            {{ isLoading ? 'Signing in...' : 'Sign in' }}
-          </app-button>
+          <app-card-footer>
+            <app-button type="submit" variant="default" size="md" [full]="true" [disabled]="isLoading || form.invalid">
+              {{ isLoading ? 'Signing in...' : 'Sign in' }}
+            </app-button>
+
+            <div class="mt-6 text-center space-y-2">
+              <app-button
+                size="sm"
+                variant="link"
+                href="/auth/forgot-password"
+              >
+                Back to forgot password
+              </app-button>
+            </div>
+          </app-card-footer>
         </form>
 
-        <div class="mt-6 text-center space-y-2">
-          <app-button
-            size="sm"
-            variant="link"
-            href="/auth/forgot-password"
-          >
-            Back to forgot password
-          </app-button>
-        </div>
       </app-card-content>
     </app-card>
   `,

@@ -25,6 +25,15 @@ import {UrlButtonComponent} from '../common/components/url-button.component';
               </app-url-button>
 
               <app-url-button
+                path="/s/diary">
+                <app-button
+                  href="/s/diary"
+                  variant="secondary">
+                  My Diary
+                </app-button>
+              </app-url-button>
+
+              <app-url-button
                 path="/s/stories">
                 <app-button
                   href="/s/stories"

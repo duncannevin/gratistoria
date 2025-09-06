@@ -83,10 +83,10 @@ export class CardTitleComponent {
 })
 export class CardDescriptionComponent {
   @Input() className = ''
-  private baseClass = 'pt-3 text-sm';
+  private baseClass = 'text-sm w-full leading-none py-2';
 
   get class() {
-    return this.baseClass + ' ' + this.baseClass;
+    return this.baseClass + ' ' + this.className;
   }
 }
 
@@ -121,7 +121,7 @@ export class CardContentComponent {
 })
 export class CardFooterComponent {
   @Input() className = ''
-  private baseClass = 'pt-6';
+  private baseClass = 'pt-4';
 
   get class() {
     return this.baseClass + ' ' + this.baseClass;

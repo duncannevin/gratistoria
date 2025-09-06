@@ -11,20 +11,17 @@ import {ButtonComponent} from '../common/components/button.component';
           You are now signed out!
         </app-card-description>
       </app-card-header>
-      <app-card-content>
+      <app-card-footer>
         <div class="mt-6 text-center space-y-2">
-
-          <div class="text-sm">
-            Sign back in
-            <app-button
-              variant="ghost"
-              href="/auth/login"
-            >
-              Sign in!
-            </app-button>
-          </div>
+          <app-button
+            variant="default"
+            href="/auth/login"
+            [full]="true"
+          >
+            Sign in!
+          </app-button>
         </div>
-      </app-card-content>
+      </app-card-footer>
     </app-card>
   `,
   imports: [...Card, ButtonComponent]

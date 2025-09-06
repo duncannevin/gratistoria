@@ -36,24 +36,25 @@ import {InputComponent} from '../common/components/input.component';
             ></app-input>
           </div>
 
-          <app-button type="submit" variant="default" size="md" className="w-full"
-                      [disabled]="isLoading || form.invalid">
-            {{ isLoading ? 'Sending email...' : 'Submit' }}
-          </app-button>
-        </form>
-
-        <div class="mt-6 text-center space-y-2">
-
-          <div class="text-sm">
-            Back to login
-            <app-button
-              variant="ghost"
-              href="/auth/login"
-            >
-              Sign in
+          <app-card-footer>
+            <app-button type="submit" variant="default" size="md" [full]="true"
+                        [disabled]="isLoading || form.invalid">
+              {{ isLoading ? 'Sending email...' : 'Submit' }}
             </app-button>
-          </div>
-        </div>
+
+            <div class="mt-6 text-center space-y-2">
+              <div class="text-sm">
+                Back to login
+                <app-button
+                  variant="ghost"
+                  href="/auth/login"
+                >
+                  Sign in
+                </app-button>
+              </div>
+            </div>
+          </app-card-footer>
+        </form>
       </app-card-content>
     </app-card>
   `,

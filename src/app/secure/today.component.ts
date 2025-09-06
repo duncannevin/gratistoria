@@ -101,10 +101,12 @@ import {PulseCardComponent} from '../common/components/pulse-card.component';
               </div>
             </div>
 
-            <app-button variant="default" size="lg" type="submit" className="w-full"
-                        [disabled]="isLoading || form.invalid">
-              {{ isLoading ? 'Saving your gratitude...' : 'Share your gratitude' }}
-            </app-button>
+            <app-card-footer>
+              <app-button variant="default" size="md" type="submit" [full]="true"
+                          [disabled]="isLoading || form.invalid">
+                {{ isLoading ? 'Saving your gratitude...' : 'Share your gratitude' }}
+              </app-button>
+            </app-card-footer>
           </form>
         </app-card-content>
       </app-card>
@@ -173,6 +175,8 @@ export class TodayComponent implements OnInit {
       this.isLoading = false;
       this.success = true;
       this.todayGratitude = {
+        id: 1,
+        date: new Date().toDateString(),
         title: this.form.get('title')!.value,
         description: this.form.get('description')!.value,
         mood: stringToMood(this.form.get('mood')!.value),

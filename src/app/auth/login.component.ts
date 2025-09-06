@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {Component, Input} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
@@ -53,30 +53,37 @@ import {InputComponent} from '../common/components/input.component';
             ></app-input>
           </div>
 
-          <app-button type="submit" variant="default" size="md" className="w-full" [disabled]="isLoading || form.invalid">
-            {{ isLoading ? 'Signing in...' : 'Sign in' }}
-          </app-button>
-        </form>
-
-        <div class="mt-6 text-center space-y-2">
-          <app-button
-            size="sm"
-            variant="link"
-            href="/auth/forgot-password"
-          >
-            Forgot your password?
-          </app-button>
-
-          <div class="text-sm">
-            Don't have an account?
+          <app-card-footer>
             <app-button
-              variant="ghost"
-              href="/auth/signup"
-            >
-              Sign up
+              type="submit"
+              variant="default"
+              size="md"
+              [full]="true"
+              [disabled]="isLoading || form.invalid">
+              {{ isLoading ? 'Signing in...' : 'Sign in' }}
             </app-button>
-          </div>
-        </div>
+
+            <div class="mt-6 text-center space-y-2">
+              <app-button
+                size="sm"
+                variant="link"
+                href="/auth/forgot-password"
+              >
+                Forgot your password?
+              </app-button>
+
+              <div class="text-sm">
+                Don't have an account?
+                <app-button
+                  variant="ghost"
+                  href="/auth/signup"
+                >
+                  Sign up
+                </app-button>
+              </div>
+            </div>
+          </app-card-footer>
+        </form>
       </app-card-content>
     </app-card>
   `,
@@ -91,7 +98,7 @@ export class LoginComponent {
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-    })
+    });
   }
 
   onSubmit() {

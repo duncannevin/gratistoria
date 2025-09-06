@@ -74,24 +74,25 @@ import {InputComponent} from '../common/components/input.component';
             {{ error }}
           </div>
 
-          <app-button type="submit" variant="default" size="md" className="w-full"
-                      [disabled]="isLoading || form.invalid">
-            {{ isLoading ? 'Creating account...' : 'Create account' }}
-          </app-button>
-        </form>
-
-        <div class="mt-6 text-center space-y-2">
-
-          <div class="text-sm">
-            Already have an account?
-            <app-button
-              variant="ghost"
-              href="/auth/login"
-            >
-              Sign in
+          <app-card-footer>
+            <app-button type="submit" variant="default" size="md" [full]="true"
+                        [disabled]="isLoading || form.invalid">
+              {{ isLoading ? 'Creating account...' : 'Create account' }}
             </app-button>
-          </div>
-        </div>
+
+            <div class="mt-6 text-center space-y-2">
+              <div class="text-sm">
+                Already have an account?
+                <app-button
+                  variant="ghost"
+                  href="/auth/login"
+                >
+                  Sign in
+                </app-button>
+              </div>
+            </div>
+          </app-card-footer>
+        </form>
       </app-card-content>
     </app-card>
   `,

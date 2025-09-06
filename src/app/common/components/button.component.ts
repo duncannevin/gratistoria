@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 export const BUTTON_VARIANTS = {
   default: "bg-primary text-primary-foreground hover:bg-primary/90",
   destructive: "bg-destructive text-destructive-foreground",
-  outline: "border border-input bg-background hover:bg-accent",
+  outline: "border border-input hover:bg-accent",
   secondary: "bg-secondary text-secondary-foreground",
   ghost: "text-primary hover:underline",
   link: "text-sm text-muted-foreground underline",
@@ -13,10 +13,9 @@ export const BUTTON_VARIANTS = {
 export type ButtonVariant = keyof typeof BUTTON_VARIANTS;
 
 export const BUTTON_SIZES = {
-  default: "h-10 px-4 py-2",
-  md: "h-10 px-4 py-2",       // alias of default
-  sm: "h-9 rounded-md px-3 text-sm",
-  lg: "h-11 rounded-md px-8",
+  sm: "rounded-md px-2 py-1 text-sm",
+  md: "rounded-md px-4 py-2 text-md",       // alias of default
+  lg: "rounded-md px-8 py-4 text-lg",
   icon: "h-10 w-10",
 } as const;
 
@@ -50,7 +49,7 @@ export type ButtonSize = keyof typeof BUTTON_SIZES;
         [type]="type"
         [disabled]="disabled"
         (click)="onButtonClick($event)"
-        class="w-full"
+        [ngClass]="class"
       >
         <ng-container [ngTemplateOutlet]="projected"></ng-container>
       </button>
@@ -58,24 +57,32 @@ export type ButtonSize = keyof typeof BUTTON_SIZES;
   `
 })
 export class ButtonComponent {
-  @HostBinding('class') hostClass = 'inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
-
   @Input() href?: string;
   @Input() target?: string;
   @Input() rel?: string;
   @Input() disabled = false;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
 
-  @Input() set className(value: string) {
-    this.hostClass += ` ${value}`;
+  private baseClass = 'flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none';
+  private _size = '';
+  private _variant = '';
+
+  get class() {
+    return this.baseClass + ' ' + this._size + ' ' + this._variant;
   }
 
   @Input() set size(s: ButtonSize) {
-    this.hostClass += ` ${BUTTON_SIZES[s]}`;
+    this._size += ` ${BUTTON_SIZES[s]}`;
   }
 
   @Input() set variant(v: ButtonVariant) {
-    this.hostClass += ` ${BUTTON_VARIANTS[v]}`;
+    this._variant += ` ${BUTTON_VARIANTS[v]}`;
+  }
+
+  @Input() set full(isIt: boolean) {
+    if (isIt) {
+      this.baseClass += ' w-full';
+    }
   }
 
   @Output() pressed = new EventEmitter<Event>();

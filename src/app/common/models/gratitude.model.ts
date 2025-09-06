@@ -1,7 +1,9 @@
 import {Mood} from '../enums/mood.enum';
 
 export interface Gratitude {
+  id: number;
   title: string;
   description: string;
-  mood: Mood,
+  mood: Mood;
+  date: string;
 }
