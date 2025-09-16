@@ -39,7 +39,7 @@ export type ButtonSize = keyof typeof BUTTON_SIZES;
       [attr.aria-disabled]="disabled ? 'true' : null"
       [attr.tabindex]="disabled ? -1 : null"
       (click)="onAnchorClick($event)"
-      class="w-full"
+      [ngClass]="class"
     >
       <ng-container [ngTemplateOutlet]="projected"></ng-container>
     </a>

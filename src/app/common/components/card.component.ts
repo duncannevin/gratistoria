@@ -82,8 +82,9 @@ export class CardTitleComponent {
   `,
 })
 export class CardDescriptionComponent {
+  @HostBinding('class') hostClass = 'block w-full';
   @Input() className = ''
-  private baseClass = 'text-sm w-full leading-none py-2';
+  private baseClass = 'text-sm w-full leading-none py-2 w-full';
 
   get class() {
     return this.baseClass + ' ' + this.className;

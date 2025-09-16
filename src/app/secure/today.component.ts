@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Card} from '../common/components/card.component';
@@ -9,6 +9,7 @@ import {DateTimePipe} from '../common/pipes/date-time.pipe';
 import {Gratitude} from '../common/models/gratitude.model';
 import {Mood, stringToMood} from '../common/enums/mood.enum';
 import {PulseCardComponent} from '../common/components/pulse-card.component';
+import {GratitudeService} from '../services/gratitude.service';
 
 @Component({
   standalone: true,
@@ -116,6 +117,8 @@ import {PulseCardComponent} from '../common/components/pulse-card.component';
   imports: [...Card, CommonModule, ReactiveFormsModule, ButtonComponent, InputComponent, BadgeComponent, DateTimePipe, PulseCardComponent],
 })
 export class TodayComponent implements OnInit {
+  private gratitudeService = inject(GratitudeService);
+
   // State flags
   isLoading = true;
   success = false;

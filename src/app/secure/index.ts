@@ -9,6 +9,7 @@ export const routes: Routes = [
       { path: 'today', loadComponent: () => import('./today.component').then(c => c.TodayComponent) },
       { path: 'stories', loadComponent: () => import('./stories.component').then(c => c.StoriesComponent) },
       { path: 'diary', loadComponent: () => import('./diary.component').then(c => c.DiaryComponent) },
+      { path: 'story/:id', loadComponent: () => import('./story.component').then(c => c.StoryComponent) },
     ],
   },
 ];

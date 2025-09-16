@@ -6,4 +6,5 @@ export interface Gratitude {
   description: string;
   mood: Mood;
   date: string;
+  story?: number;
 }
