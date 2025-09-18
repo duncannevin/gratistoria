@@ -1,25 +1,26 @@
-import {Component, computed, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Card} from '../common/components/card.component';
 import {Gratitude} from '../common/models/gratitude.model';
 import {DiaryCardComponent} from '../common/components/diary-card.component';
 import {GratitudeService} from '../services/gratitude.service';
-import {catchError, from, map, Observable, of, startWith} from 'rxjs';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {LoadState} from '../common/models/load-state.model';
+import {Observable, of} from 'rxjs';
+import {Stateful} from '../common/components/stateful.component';
+import {Story} from '../common/models/story.model';
+import {StoryService} from '../services/story.service';
 
 @Component({
   standalone: true,
   template: `
     <div class="flex flex-col">
-      @if (isLoading()) {
+      @if (loading()) {
         <div class="max-w-4xl mx-auto px-6">
           <div class="py-12 text-center">
             <div class="text-4xl mb-4">📖</div>
             <div class="text-lg text-muted-foreground">Loading your diary...</div>
           </div>
         </div>
-      } @else if (!isLoading() && entries()?.value?.length === 0) {
+      } @else if (!loading() && value()?.length === 0) {
         <app-card className="p-8 text-center">
           <div class="text-4xl mb-4">📝</div>
           <h3 class="mb-2">No entries yet</h3>
@@ -37,10 +38,13 @@ import {LoadState} from '../common/models/load-state.model';
             Your personal collection of gratitude moments and the stories they've inspired
           </p>
         </div>
-        @for (gratitude of entries()?.value; track gratitude.id) {
-          <app-diary-card
-            [gratitude]="gratitude"
-          ></app-diary-card>
+        @for (gratitude of value(); track gratitude.id) {
+          <div class="mb-4">
+            <app-diary-card
+              [gratitude]="gratitude"
+              [story]="getStory(gratitude.story) | async"
+            ></app-diary-card>
+          </div>
           <!--            <app-card className="w-[742px] max-w-full">-->
             <!--              <app-card-header>-->
             <!--                <div class="flex items-center gap-3">-->
@@ -61,16 +65,21 @@ import {LoadState} from '../common/models/load-state.model';
   `,
   imports: [CommonModule, ...Card, DiaryCardComponent],
 })
-export class DiaryComponent {
+export class DiaryComponent extends Stateful<Gratitude[]> {
   private gratitudeService = inject(GratitudeService);
+  private storyService = inject(StoryService);
 
-  state$: Observable<LoadState<Gratitude[]>> = from(this.gratitudeService.getAll()).pipe(
-    map((entries) => ({ kind: 'success', value: entries } as const)),
-    catchError((err) => of({ kind: 'error' } as const)),
-    startWith({ kind: 'loading' } as const),
-  );
+  constructor() {
+    super();
+    this.withInitialArgs();
+  }
 
-  state = toSignal(this.state$);
-  isLoading = computed(() => this.state()?.kind === 'loading');
-  entries = computed(() => this.state());
+  getStory(id?: number): Observable<Story | null> {
+    if (!id) return of(null);
+    return this.storyService.getStoryById(id);
+  }
+
+  protected override fetchState(): Observable<Gratitude[] | null> {
+    return this.gratitudeService.getAll();
+  }
 }

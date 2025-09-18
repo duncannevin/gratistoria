@@ -66,7 +66,7 @@ import {Story} from '../models/story.model';
 })
 export class DiaryCardComponent {
   @Input() gratitude!: Gratitude;
-  @Input() story?: Story;
+  @Input() story: Story | null | undefined;
   protected readonly CalendarIcon = CalendarIcon;
   protected readonly HeartIcon = HeartIcon;
   protected readonly BookOpen = BookOpen;

@@ -1,13 +1,12 @@
-import {Component, computed, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Story} from '../common/models/story.model';
 import {Card} from '../common/components/card.component';
 import {StoryCardComponent} from '../common/components/story-card.component';
 import {PulseCardComponent} from '../common/components/pulse-card.component';
 import {StoryService} from '../services/story.service';
-import {catchError, from, map, Observable, of, shareReplay, startWith, tap} from 'rxjs';
-import {LoadState} from '../common/models/load-state.model';
-import {toSignal} from '@angular/core/rxjs-interop';
+import {Observable} from 'rxjs';
+import {Stateful} from '../common/components/stateful.component';
 
 @Component({
   standalone: true,
@@ -27,7 +26,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
             <app-pulse-card></app-pulse-card>
           </div>
         }
-      } @else if (stories().length === 0) {
+      } @else if (value()?.length === 0) {
         <app-card className="mb-2">
           <app-card-content className="text-center py-12">
             <div class="text-6xl mb-4">📖</div>
@@ -39,7 +38,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
           </app-card-content>
         </app-card>
       } @else {
-        @for (story of stories(); track story.id) {
+        @for (story of value(); track story.id) {
           <div class="mb-4">
             <app-story-card
               [story]="story"
@@ -57,19 +56,16 @@ import {toSignal} from '@angular/core/rxjs-interop';
   `,
   imports: [...Card, CommonModule, PulseCardComponent, StoryCardComponent],
 })
-export class StoriesComponent implements OnInit {
-  private storyService = inject(StoryService);
+export class StoriesComponent extends Stateful<Story[]> {
+  protected storyService = inject(StoryService);
 
-  state$: Observable<LoadState<Story[]>> = from(this.storyService.getStories()).pipe(
-    map((stories) => ({ kind: 'success', value: stories } as const)),
-    catchError((err) => of({ kind: 'error' } as const)),
-    startWith({ kind: 'loading' } as const),
-  );
+  constructor() {
+    super();
+    this.withInitialArgs();
+  }
 
-  state = toSignal(this.state$);
-  stories = computed(() => this.state()?.value ?? []);
-  loading = computed(() => this.state()?.kind === 'loading');
 
-  ngOnInit() {
+  protected override fetchState(): Observable<Story[] | null> {
+    return this.storyService.getStories();
   }
 }

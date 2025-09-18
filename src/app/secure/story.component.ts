@@ -1,23 +1,15 @@
-import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject, computed} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Story} from '../common/models/story.model';
 import {StoryService} from '../services/story.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {toSignal} from '@angular/core/rxjs-interop';
+import {ActivatedRoute} from '@angular/router';
 import {
-  catchError,
-  distinctUntilChanged,
-  finalize,
-  from,
   map,
   Observable,
-  of,
-  shareReplay,
-  startWith,
-  switchMap, tap
+  switchMap,
 } from 'rxjs';
-import {LoadState} from '../common/models/load-state.model';
 import {ButtonComponent} from '../common/components/button.component';
+import {Stateful} from '../common/components/stateful.component';
 
 @Component({
   standalone: true,
@@ -25,7 +17,7 @@ import {ButtonComponent} from '../common/components/button.component';
   imports: [ButtonComponent, CommonModule],
   template: `
     <!-- Loading -->
-    <ng-container *ngIf="isLoading(); else notLoading">
+    <ng-container *ngIf="loading(); else notLoading">
       <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <div class="text-center">
           <div class="text-4xl mb-4">📖</div>
@@ -36,7 +28,7 @@ import {ButtonComponent} from '../common/components/button.component';
 
     <ng-template #notLoading>
       <!-- Error / Not found -->
-      <ng-container *ngIf="error() || !story(); else storyView">
+      <ng-container *ngIf="error() && !loading(); else storyView">
         <div
           class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
           <div class="text-center max-w-md">
@@ -75,7 +67,7 @@ import {ButtonComponent} from '../common/components/button.component';
             <article class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-border p-8 md:p-12">
               <header class="mb-8">
                 <h1 class="text-3xl md:text-4xl mb-4 leading-tight">
-                  {{ story()?.title }}
+                  {{ value()?.title }}
                 </h1>
 
                 <div class="flex flex-wrap items-center gap-4 text-muted-foreground">
@@ -88,7 +80,7 @@ import {ButtonComponent} from '../common/components/button.component';
                       <line x1="8" y1="2" x2="8" y2="6"></line>
                       <line x1="3" y1="10" x2="21" y2="10"></line>
                     </svg>
-                    <span>{{ story()?.date | date:'EEEE, MMMM d, y' }}</span>
+                    <span>{{ value()?.date | date:'EEEE, MMMM d, y' }}</span>
                   </div>
                   <div class="flex items-center gap-2">
                     <!-- Users icon -->
@@ -99,21 +91,21 @@ import {ButtonComponent} from '../common/components/button.component';
                       <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
                       <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
-                    <span>{{ story()?.entryCount }} community entries</span>
+                    <span>{{ value()?.entryCount }} community entries</span>
                   </div>
                 </div>
               </header>
 
               <div class="prose prose-lg max-w-none">
                 <p class="text-foreground leading-relaxed text-lg">
-                  {{ story()?.content }}
+                  {{ value()?.content }}
                 </p>
               </div>
 
               <footer class="mt-12 pt-8 border-t border-border">
                 <div class="bg-muted/30 rounded-lg p-6">
                   <p class="text-sm text-muted-foreground text-center">
-                    This story was woven from {{ story()?.entryCount }} gratitude entries shared by our community.
+                    This story was woven from {{ value()?.entryCount }} gratitude entries shared by our community.
                     Each contribution helps create these beautiful narratives while keeping personal details private.
                   </p>
                 </div>
@@ -125,41 +117,16 @@ import {ButtonComponent} from '../common/components/button.component';
     </ng-template>
   `,
 })
-export class StoryComponent {
-  @Output() back = new EventEmitter<void>();
-
+export class StoryComponent extends Stateful<Story> {
   private storyService = inject(StoryService);
-  private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  state$: Observable<LoadState<Story>> = this.route.paramMap.pipe(
-    map((map) => map.get('id') ?? ''),
-    distinctUntilChanged(),
-    switchMap((id) => from(this.loadStory(id)).pipe(
-      map((story) =>
-        story ?
-          { kind: 'success', value: story } as const :
-          { kind: 'not-found' } as const
+  protected override fetchState(): Observable<Story | null> {
+    return this.route.paramMap.pipe(
+      map((map) => map.get('id') ?? ''),
+      switchMap((id) =>
+          this.storyService.getStoryById(id),
       ),
-      catchError((err) => of({ kind: 'error' } as const))
-    )),
-    startWith({ kind: 'loading' } as const),
-    shareReplay({ bufferSize: 1, refCount: true }),
-  );
-
-  state = toSignal(this.state$);
-  story = computed(() => this.state()?.kind === 'success' ? (this.state() as { kind: 'success', value: Story } ).value : null);
-  isLoading = computed(() => this.state()?.kind === 'loading');
-  error = computed(() =>
-    this.state()?.kind === 'error' ?
-      'Could not load story data' :
-      this.state()?.kind === 'not-found' ?
-      'Story not found' :
-      null,
-  );
-
-  private async loadStory(storyId: string | null): Promise<Story | null> {
-    if (!storyId) return null;
-    return await this.storyService.getStoryById(storyId);
+    );
   }
 }

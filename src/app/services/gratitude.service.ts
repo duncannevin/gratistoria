@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import dayjs from 'dayjs';
 import type { Gratitude } from '../common/models/gratitude.model';
 import {Mood} from '../common/enums/mood.enum';
+import {delay, map, Observable, of} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class GratitudeService {
@@ -24,7 +25,7 @@ export class GratitudeService {
         "There's something magical about the first sip—the warmth, aroma, and quiet before the day begins.",
       mood: Mood.PEACEFUL,
       date: this.dayString(1),
-      story: 101,
+      story: 1,
     },
     {
       id: 2,
@@ -32,7 +33,7 @@ export class GratitudeService {
       description: 'A stranger held the door and smiled. Small gesture, big lift.',
       mood: Mood.JOYFUL,
       date: this.dayString(2),
-      story: 102,
+      story: 2,
     },
     {
       id: 3,
@@ -40,7 +41,7 @@ export class GratitudeService {
       description: 'Laughter and presence—instant memories.',
       mood: Mood.GRATEFUL,
       date: this.dayString(3),
-      story: 101,
+      story: 3,
     },
     {
       id: 4,
@@ -48,7 +49,7 @@ export class GratitudeService {
       description: 'Orange and pink sky that reset my perspective.',
       mood: Mood.REFLECTIVE,
       date: this.dayString(4),
-      story: 103,
+      story: 4,
     },
     {
       id: 5,
@@ -56,7 +57,7 @@ export class GratitudeService {
       description: 'A promising project kicked off—stretching in the right ways.',
       mood: Mood.HOPEFUL,
       date: this.dayString(5),
-      story: 102,
+      story: 5,
     },
   ];
 
@@ -69,10 +70,9 @@ export class GratitudeService {
   }
 
   // --- read ---------------------------------------------------------------
-  async getAll(): Promise<Gratitude[]> {
-    await this.delay(300);
+  getAll(): Observable<Gratitude[]> {
     // return newest first
-    return [...this.db].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+    return of(delay(1200)).pipe(map(() => [...this.db].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))));
   }
 
   async getById(id: number | string): Promise<Gratitude | null> {
