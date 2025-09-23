@@ -1,7 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
-import {AuthService} from '../services/auth.service';
 import {Store} from '@ngrx/store';
 import {UserActions} from '../state/user.actions';
 
@@ -30,12 +29,9 @@ import {UserActions} from '../state/user.actions';
   imports: [...Card, ButtonComponent]
 })
 export class SignOutComponent {
-  private auth = inject(AuthService);
   private store = inject(Store);
   constructor() {
     // best-effort signout on page open
-    this.auth.logout().subscribe({
-      next: () => this.store.dispatch(UserActions.logout()),
-    });
+    this.store.dispatch(UserActions.logoutStart());
   }
 }

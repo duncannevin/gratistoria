@@ -78,4 +78,26 @@ export class UserEffects {
     { dispatch: false }
   );
 
+  // Logout: call API then clear store and route to login
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.logoutStart),
+      switchMap(() =>
+        this.auth.logout().pipe(
+          map(() => UserActions.logout()),
+          catchError((err) => of(UserActions.logoutFailure({ error: err?.message || 'Logout failed' }))),
+        )
+      )
+    )
+  );
+
+  logoutNavigate$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(UserActions.logout),
+        tap(() => this.router.navigateByUrl('/auth/login')),
+      ),
+    { dispatch: false }
+  );
+
 }
