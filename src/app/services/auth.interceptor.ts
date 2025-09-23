@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpHandlerFn, HttpHeaders, HttpInterceptorFn, HttpR
 import { inject } from '@angular/core';
 import { catchError, filter, switchMap, take, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
-import { LocalStorageService } from './local-storage/local-storage.service';
+import { LocalStorageService } from './local-storage.service';
 import { Subject } from 'rxjs';
 
 let refreshInProgress = false;
@@ -15,6 +15,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
   // Attach Authorization header if token exists
   const token = storage.getItem<string>('token');
   let authReq = req;
+  console.log('fooo', token);
   if (token) {
     authReq = req.clone({
       headers: (req.headers || new HttpHeaders()).set('Authorization', `Bearer ${token}`),

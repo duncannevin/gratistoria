@@ -27,7 +27,7 @@ import {selectErrorAll, selectLoadingAll, selectStories} from '../state/story.se
             <app-pulse-card></app-pulse-card>
           </div>
         }
-      } @else if (value()?.length === 0) {
+      } @else if (value().length === 0) {
         <app-card className="mb-2">
           <app-card-content className="text-center py-12">
             <div class="text-6xl mb-4">📖</div>

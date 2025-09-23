@@ -10,7 +10,7 @@ import { ResetPasswordResponseModel } from '../models/reset-password-response.mo
 import { ChangePasswordResponseModel } from '../models/change-password-response.model';
 import { SignupFormModel } from '../models/signup-form.model';
 import { ChangePasswordFormModel } from '../models/change-password-form.model';
-import { LocalStorageService } from './local-storage/local-storage.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

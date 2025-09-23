@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class LocalStorageService {
   getItem<T = string>(key: string): T | null {
+    const v = localStorage.getItem(key);
+    if (v == null) return null;
     try {
-      const v = localStorage.getItem(key);
-      return v ? (JSON.parse(v) as T) : null;
+      return JSON.parse(v) as T;
     } catch {
-      return null;
+      // Return raw string when value is not JSON
+      return v as unknown as T;
     }
   }
 
@@ -28,4 +30,3 @@ export class LocalStorageService {
     }
   }
 }
-
