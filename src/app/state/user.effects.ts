@@ -48,4 +48,14 @@ export class UserEffects {
     )
   );
 
+  // Navigate to today whenever a user profile is successfully fetched
+  userFetchedNavigate$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(UserActions.getUserSuccess),
+        tap(() => this.router.navigateByUrl('/s/today')),
+      ),
+    { dispatch: false }
+  );
+
 }
