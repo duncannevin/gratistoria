@@ -48,12 +48,32 @@ export class UserEffects {
     )
   );
 
-  // Navigate to today whenever a user profile is successfully fetched
+  // On successful profile fetch: go to /s/today only if not already on a secure page
   userFetchedNavigate$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(UserActions.getUserSuccess),
-        tap(() => this.router.navigateByUrl('/s/today')),
+        tap(() => {
+          const url = this.router.url || '';
+          if (!url.startsWith('/s/')) {
+            this.router.navigateByUrl('/s/today');
+          }
+        }),
+      ),
+    { dispatch: false }
+  );
+
+  // On failed profile fetch: if attempting to access a secure page, go to login
+  userFetchFailedNavigate$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(UserActions.getUserFailure),
+        tap(() => {
+          const url = this.router.url || '';
+          if (url.startsWith('/s/')) {
+            this.router.navigateByUrl('/auth/login');
+          }
+        }),
       ),
     { dispatch: false }
   );
