@@ -1,13 +1,15 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Card} from '../common/components/card.component';
 import {Gratitude} from '../common/models/gratitude.model';
 import {DiaryCardComponent} from '../common/components/diary-card.component';
-import {GratitudeService} from '../services/gratitude.service';
 import {Observable, of} from 'rxjs';
-import {Stateful} from '../common/components/stateful.component';
 import {Story} from '../common/models/story.model';
 import {StoryService} from '../services/story.service';
+import {Store} from '@ngrx/store';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {DiaryActions} from '../state/gratitude.actions';
+import {selectErrorAll, selectItems, selectLoadingAll} from '../state/gratitude.selectors';
 
 @Component({
   standalone: true,
@@ -65,13 +67,20 @@ import {StoryService} from '../services/story.service';
   `,
   imports: [CommonModule, ...Card, DiaryCardComponent],
 })
-export class DiaryComponent extends Stateful<Gratitude[]> {
-  private gratitudeService = inject(GratitudeService);
+export class DiaryComponent {
+  private store = inject(Store);
   private storyService = inject(StoryService);
 
+  private itemsSel = toSignal(this.store.select(selectItems), { initialValue: [] as Gratitude[] });
+  private loadingAllSel = toSignal(this.store.select(selectLoadingAll), { initialValue: true });
+  private errorAllSel = toSignal(this.store.select(selectErrorAll), { initialValue: null });
+
+  readonly value = computed<Gratitude[] | null>(() => this.itemsSel());
+  readonly loading = computed<boolean>(() => this.loadingAllSel());
+  readonly error = computed<string | null>(() => this.errorAllSel());
+
   constructor() {
-    super();
-    this.withInitialArgs();
+    this.store.dispatch(DiaryActions.loadAll());
   }
 
   getStory(id?: number): Observable<Story | null> {
@@ -79,7 +88,5 @@ export class DiaryComponent extends Stateful<Gratitude[]> {
     return this.storyService.getStoryById(id);
   }
 
-  protected override fetchState(): Observable<Gratitude[] | null> {
-    return this.gratitudeService.getAll();
-  }
+  // uses store for data; no local load
 }

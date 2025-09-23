@@ -1,15 +1,13 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Story} from '../common/models/story.model';
-import {StoryService} from '../services/story.service';
 import {ActivatedRoute} from '@angular/router';
-import {
-  map,
-  Observable,
-  switchMap,
-} from 'rxjs';
+import {map} from 'rxjs';
 import {ButtonComponent} from '../common/components/button.component';
-import {Stateful} from '../common/components/stateful.component';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {Store} from '@ngrx/store';
+import {StoryPageActions} from '../state/story-page.actions';
+import {selectError, selectLoading, selectStory} from '../state/story-page.selectors';
 
 @Component({
   standalone: true,
@@ -117,16 +115,23 @@ import {Stateful} from '../common/components/stateful.component';
     </ng-template>
   `,
 })
-export class StoryComponent extends Stateful<Story> {
-  private storyService = inject(StoryService);
+export class StoryComponent {
   private route = inject(ActivatedRoute);
+  private store = inject(Store);
 
-  protected override fetchState(): Observable<Story | null> {
-    return this.route.paramMap.pipe(
-      map((map) => map.get('id') ?? ''),
-      switchMap((id) =>
-          this.storyService.getStoryById(id),
-      ),
-    );
+  private idSel = toSignal(this.route.paramMap.pipe(map((pm) => Number(pm.get('id') ?? '0'))), { initialValue: 0 });
+  private storySel = toSignal(this.store.select(selectStory), { initialValue: null as Story | null });
+  private loadingSel = toSignal(this.store.select(selectLoading), { initialValue: true });
+  private errorSel = toSignal(this.store.select(selectError), { initialValue: null });
+
+  readonly value = computed(() => this.storySel());
+  readonly loading = computed(() => this.loadingSel());
+  readonly error = computed(() => this.errorSel());
+
+  constructor() {
+    const id = this.idSel();
+    if (id) {
+      this.store.dispatch(StoryPageActions.load({ id }));
+    }
   }
 }

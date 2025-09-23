@@ -1,12 +1,13 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Story} from '../common/models/story.model';
 import {Card} from '../common/components/card.component';
 import {StoryCardComponent} from '../common/components/story-card.component';
 import {PulseCardComponent} from '../common/components/pulse-card.component';
-import {StoryService} from '../services/story.service';
-import {Observable} from 'rxjs';
-import {Stateful} from '../common/components/stateful.component';
+import {Store} from '@ngrx/store';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {StoryActions} from '../state/story.actions';
+import {selectErrorAll, selectLoadingAll, selectStories} from '../state/story.selectors';
 
 @Component({
   standalone: true,
@@ -56,16 +57,18 @@ import {Stateful} from '../common/components/stateful.component';
   `,
   imports: [...Card, CommonModule, PulseCardComponent, StoryCardComponent],
 })
-export class StoriesComponent extends Stateful<Story[]> {
-  protected storyService = inject(StoryService);
+export class StoriesComponent {
+  private store = inject(Store);
+
+  private storiesSel = toSignal(this.store.select(selectStories), { initialValue: [] as Story[] });
+  private loadingSel = toSignal(this.store.select(selectLoadingAll), { initialValue: true });
+  private errorSel = toSignal(this.store.select(selectErrorAll), { initialValue: null });
+
+  readonly value = computed(() => this.storiesSel());
+  readonly loading = computed(() => this.loadingSel());
+  readonly error = computed(() => this.errorSel());
 
   constructor() {
-    super();
-    this.withInitialArgs();
-  }
-
-
-  protected override fetchState(): Observable<Story[] | null> {
-    return this.storyService.getStories();
+    this.store.dispatch(StoryActions.loadAll());
   }
 }

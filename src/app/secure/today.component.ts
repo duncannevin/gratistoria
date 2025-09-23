@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Card} from '../common/components/card.component';
@@ -9,7 +9,13 @@ import {DateTimePipe} from '../common/pipes/date-time.pipe';
 import {Gratitude} from '../common/models/gratitude.model';
 import {Mood, stringToMood} from '../common/enums/mood.enum';
 import {PulseCardComponent} from '../common/components/pulse-card.component';
-import {GratitudeService} from '../services/gratitude.service';
+import {Store} from '@ngrx/store';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {DiaryActions} from '../state/gratitude.actions';
+import {selectCreating} from '../state/gratitude.selectors';
+import {TodayActions} from '../state/today.actions';
+import {selectError, selectLoading, selectToday} from '../state/today.selectors';
+import dayjs from 'dayjs';
 
 @Component({
   standalone: true,
@@ -19,7 +25,7 @@ import {GratitudeService} from '../services/gratitude.service';
         <h2 class="text-2xl mb-2">Today's Gratitude ✨</h2>
       </div>
     <!-- Existing entry state -->
-    @if (todayGratitude) {
+    @if (value()) {
       <app-card>
         <app-card-header>
           <app-card-description>
@@ -30,8 +36,8 @@ import {GratitudeService} from '../services/gratitude.service';
         </app-card-header>
         <app-card-content className="space-y-4">
           <div>
-            <h3 class="text-lg mb-2">{{ todayGratitude!.title }}</h3>
-            <p class="text-muted-foreground leading-relaxed">{{ todayGratitude!.description }}</p>
+            <h3 class="text-lg mb-2">{{ value()!.title }}</h3>
+            <p class="text-muted-foreground leading-relaxed">{{ value()!.description }}</p>
           </div>
 
           <div class="flex items-center justify-center" *ngIf="selectedMood">
@@ -46,7 +52,7 @@ import {GratitudeService} from '../services/gratitude.service';
           </div>
         </app-card-content>
       </app-card>
-    } @else if (isLoading) {
+    } @else if (loading()) {
       <app-pulse-card></app-pulse-card>
     } @else {
       <app-card>
@@ -104,8 +110,8 @@ import {GratitudeService} from '../services/gratitude.service';
 
             <app-card-footer>
               <app-button variant="default" size="md" type="submit" [full]="true"
-                          [disabled]="isLoading || form.invalid">
-                {{ isLoading ? 'Saving your gratitude...' : 'Share your gratitude' }}
+                          [disabled]="loading() || form.invalid">
+                {{ loading() ? 'Saving your gratitude...' : 'Share your gratitude' }}
               </app-button>
             </app-card-footer>
           </form>
@@ -116,20 +122,21 @@ import {GratitudeService} from '../services/gratitude.service';
   `,
   imports: [...Card, CommonModule, ReactiveFormsModule, ButtonComponent, InputComponent, BadgeComponent, DateTimePipe, PulseCardComponent],
 })
-export class TodayComponent implements OnInit {
-  private gratitudeService = inject(GratitudeService);
+export class TodayComponent {
+  private store = inject(Store);
+  private fb = inject(FormBuilder);
+  readonly today = dayjs().toDate();
 
-  // State flags
-  isLoading = true;
-  success = false;
+  private todaySel = toSignal(this.store.select(selectToday), { initialValue: null });
+  private loadingTodaySel = toSignal(this.store.select(selectLoading), { initialValue: true });
+  private creatingSel = toSignal(this.store.select(selectCreating), { initialValue: false });
+  private errorTodaySel = toSignal(this.store.select(selectError), { initialValue: null });
 
-  todayGratitude?: Gratitude;
+  readonly value = computed(() => this.todaySel());
+  readonly loading = computed(() => this.loadingTodaySel() || this.creatingSel());
+  readonly error = computed(() => this.errorTodaySel());
 
-  // Form
-  form: FormGroup;
-
-  // Mood options
-  moodOptions = [
+  readonly moodOptions = [
     {value: 'joyful', label: 'Joyful', emoji: '😊', color: 'bg-yellow-100 text-yellow-800'},
     {value: 'peaceful', label: 'Peaceful', emoji: '🕊️', color: 'bg-blue-100 text-blue-800'},
     {value: 'grateful', label: 'Grateful', emoji: '🙏', color: 'bg-emerald-100 text-emerald-800'},
@@ -137,29 +144,16 @@ export class TodayComponent implements OnInit {
     {value: 'reflective', label: 'Reflective', emoji: '✨', color: 'bg-purple-100 text-purple-800'},
   ];
 
-  constructor(private readonly fb: FormBuilder) {
+  form: FormGroup;
+
+  constructor() {
     this.form = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(120)]],
       description: ['', [Validators.required, Validators.maxLength(2000)]],
       mood: ['', Validators.required],
     });
+    this.store.dispatch(TodayActions.load());
   }
-
-  ngOnInit() {
-    setTimeout(() => {
-      this.isLoading = false;
-      this.success = true;
-      // this.todayGratitude =
-      //   {
-      //     title: 'Work that Feels Like Craft',
-      //     mood: Mood.GRATEFUL,
-      //     description:
-      //       'Today’s pages celebrated solving stubborn bugs, finishing drafts, and learning just enough to teach someone else. One entry compared a clean git history to a swept workshop floor—evidence that care was taken. Another thanked a teammate for patient code reviews that made the whole team sharper.\n\nGratitude leaned toward process over outcomes: the pleasure of doing a thing well, slowly, together.',
-      //   }
-    }, 800);
-  }
-
-  today = new Date();
 
   get selectedMood() {
     const v = this.form.get('mood')?.value;
@@ -172,18 +166,7 @@ export class TodayComponent implements OnInit {
 
   onSubmit() {
     if (this.form.invalid) return;
-    this.isLoading = true;
-    // Simulate save
-    setTimeout(() => {
-      this.isLoading = false;
-      this.success = true;
-      this.todayGratitude = {
-        id: 1,
-        date: new Date().toDateString(),
-        title: this.form.get('title')!.value,
-        description: this.form.get('description')!.value,
-        mood: stringToMood(this.form.get('mood')!.value),
-      };
-    }, 600);
+
+    this.store.dispatch(DiaryActions.create({ entry: this.form.value as Omit<Gratitude, 'id'> }));
   }
 }
