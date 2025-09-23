@@ -55,7 +55,7 @@ export class UserEffects {
         ofType(UserActions.getUserSuccess),
         tap(() => {
           const url = this.router.url || '';
-          if (!url.startsWith('/s/')) {
+          if (!url.startsWith('/s')) {
             this.router.navigateByUrl('/s/today');
           }
         }),
@@ -70,7 +70,7 @@ export class UserEffects {
         ofType(UserActions.getUserFailure),
         tap(() => {
           const url = this.router.url || '';
-          if (url.startsWith('/s/')) {
+          if (url.startsWith('/s')) {
             this.router.navigateByUrl('/auth/login');
           }
         }),
