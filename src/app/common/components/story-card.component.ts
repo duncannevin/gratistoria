@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Card} from './card.component';
-import {Story} from '../models/story.model';
+import {Story} from '../../models/story.model';
 import {DateTimePipe} from '../pipes/date-time.pipe';
 import {BadgeComponent} from './badge.component';
 import {ButtonComponent} from './button.component';

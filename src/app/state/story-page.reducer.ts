@@ -1,5 +1,5 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { Story } from '../common/models/story.model';
+import { Story } from '../models/story.model';
 import { StoryPageActions } from './story-page.actions';
 
 export interface StoryPageState {
@@ -25,4 +25,3 @@ export const storyPageFeature = createFeature({
   name: 'storyPage',
   reducer,
 });
-

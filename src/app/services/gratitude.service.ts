@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import dayjs from 'dayjs';
-import type { Gratitude } from '../common/models/gratitude.model';
+import type { Gratitude } from '../models/gratitude.model';
 import {Mood} from '../common/enums/mood.enum';
 import {delay, map, Observable, of} from 'rxjs';
 

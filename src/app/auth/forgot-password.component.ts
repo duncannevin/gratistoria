@@ -1,9 +1,11 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
+import {AuthService} from '../services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   standalone: true,
@@ -65,6 +67,9 @@ export class ForgotPasswordComponent {
 
   form: FormGroup;
 
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
   constructor(private readonly fb: FormBuilder) {
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -73,12 +78,16 @@ export class ForgotPasswordComponent {
 
   onSubmit() {
     if (this.form.invalid) return;
-
     this.isLoading = true;
-
-    setTimeout(() => {
-      console.log('Forgot password FORM:', this.form.value);
-      this.isLoading = false;
-    }, 800);
+    this.error = null;
+    const { email } = this.form.value as any;
+    this.auth.forgotPassword(email).subscribe({
+      next: () => this.router.navigateByUrl('/auth/confirmation-code'),
+      error: (e) => {
+        this.error = e?.message || 'Failed to send reset';
+        this.isLoading = false;
+      },
+      complete: () => this.isLoading = false,
+    });
   }
 }

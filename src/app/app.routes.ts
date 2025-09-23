@@ -8,6 +8,7 @@ export const routes: Routes = [
   },
   {
     path: 's',
+    canActivate: [() => import('./guards/user-ready.guard').then(m => m.userReadyGuard)],
     loadChildren: () => import('./secure').then((m) => m.routes),
   },
   { path: '**', redirectTo: 'auth/login' },

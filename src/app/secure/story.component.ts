@@ -1,6 +1,6 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Story} from '../common/models/story.model';
+import {Story} from '../models/story.model';
 import {ActivatedRoute} from '@angular/router';
 import {map} from 'rxjs';
 import {ButtonComponent} from '../common/components/button.component';

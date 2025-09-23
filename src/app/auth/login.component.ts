@@ -1,9 +1,13 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
+import {Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {UserActions} from '../state/user.actions';
+import {LoginResponseModel} from '../models/login-response.model';
 
 @Component({
   standalone: true,
@@ -94,6 +98,9 @@ export class LoginComponent {
 
   form: FormGroup;
 
+  private router = inject(Router);
+  private store = inject(Store);
+
   constructor(private readonly fb: FormBuilder) {
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -103,12 +110,7 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.form.invalid) return;
-
-    this.isLoading = true;
-
-    setTimeout(() => {
-      console.log('SIGN IN FORM:', this.form.value);
-      this.isLoading = false;
-    }, 800);
+    const { email, password } = this.form.value as any;
+    this.store.dispatch(UserActions.login({ email, password }));
   }
 }

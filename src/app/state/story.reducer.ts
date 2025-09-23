@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Story } from '../common/models/story.model';
+import { Story } from '../models/story.model';
 import { StoryActions } from './story.actions';
 
 export interface StoryState extends EntityState<Story> {
@@ -52,4 +52,3 @@ export const storyFeature = createFeature({
   name: 'story',
   reducer,
 });
-

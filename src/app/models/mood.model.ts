@@ -1,4 +1,4 @@
-import {Mood} from '../enums/mood.enum';
+import {Mood} from '../common/enums/mood.enum';
 
 export interface MoodData {
   value: string;
@@ -17,3 +17,4 @@ export const MOODS: Record<Mood, MoodData> = {
 };
 
 export type Moods = typeof MOODS;
+

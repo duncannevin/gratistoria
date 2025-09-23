@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { Gratitude } from '../common/models/gratitude.model';
+import { Gratitude } from '../models/gratitude.model';
 
 export const DiaryActions = createActionGroup({
   source: 'Diary',

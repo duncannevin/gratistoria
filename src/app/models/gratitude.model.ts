@@ -1,4 +1,4 @@
-import {Mood} from '../enums/mood.enum';
+import {Mood} from '../common/enums/mood.enum';
 
 export interface Gratitude {
   id: number;

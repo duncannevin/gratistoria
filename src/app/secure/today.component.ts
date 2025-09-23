@@ -6,7 +6,7 @@ import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
 import {BadgeComponent} from '../common/components/badge.component';
 import {DateTimePipe} from '../common/pipes/date-time.pipe';
-import {Gratitude} from '../common/models/gratitude.model';
+import {Gratitude} from '../models/gratitude.model';
 import {Mood, stringToMood} from '../common/enums/mood.enum';
 import {PulseCardComponent} from '../common/components/pulse-card.component';
 import {Store} from '@ngrx/store';

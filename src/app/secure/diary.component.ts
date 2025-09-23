@@ -1,10 +1,10 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Card} from '../common/components/card.component';
-import {Gratitude} from '../common/models/gratitude.model';
+import {Gratitude} from '../models/gratitude.model';
 import {DiaryCardComponent} from '../common/components/diary-card.component';
 import {Observable, of} from 'rxjs';
-import {Story} from '../common/models/story.model';
+import {Story} from '../models/story.model';
 import {StoryService} from '../services/story.service';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';

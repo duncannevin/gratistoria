@@ -1,5 +1,5 @@
 import { createActionGroup, props } from '@ngrx/store';
-import { Story } from '../common/models/story.model';
+import { Story } from '../models/story.model';
 
 export const StoryPageActions = createActionGroup({
   source: 'Story Page',
@@ -9,4 +9,3 @@ export const StoryPageActions = createActionGroup({
     'Load Failure': props<{ error: string }>(),
   },
 });
-

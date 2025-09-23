@@ -3,11 +3,11 @@ import {CommonModule} from '@angular/common';
 import {Card} from './card.component';
 import {DateTimePipe} from '../pipes/date-time.pipe';
 import {BadgeComponent} from './badge.component';
-import {Gratitude} from '../models/gratitude.model';
+import {Gratitude} from '../../models/gratitude.model';
 import {MoodPipePipe} from '../pipes/mood.pipe';
 import {ButtonComponent} from './button.component';
 import {BookOpen, CalendarIcon, HeartIcon, LucideAngularModule} from 'lucide-angular';
-import {Story} from '../models/story.model';
+import {Story} from '../../models/story.model';
 
 @Component({
   selector: 'app-diary-card',

@@ -1,6 +1,6 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Story} from '../common/models/story.model';
+import {Story} from '../models/story.model';
 import {Card} from '../common/components/card.component';
 import {StoryCardComponent} from '../common/components/story-card.component';
 import {PulseCardComponent} from '../common/components/pulse-card.component';

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import dayjs from 'dayjs';
-import {Story} from '../common/models/story.model';
+import {Story} from '../models/story.model';
 import {delay, map, Observable, of} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { Gratitude } from '../common/models/gratitude.model';
+import { Gratitude } from '../models/gratitude.model';
 
 export const TodayActions = createActionGroup({
   source: 'Today',
@@ -9,4 +9,3 @@ export const TodayActions = createActionGroup({
     'Load Failure': props<{ error: string }>(),
   },
 });
-

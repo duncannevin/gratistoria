@@ -1,9 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
+import {AuthService} from '../services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   standalone: true,
@@ -80,6 +82,9 @@ export class ConfirmationCodeComponent {
 
   form: FormGroup;
 
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
   constructor(private readonly fb: FormBuilder) {
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -89,12 +94,16 @@ export class ConfirmationCodeComponent {
 
   onSubmit() {
     if (this.form.invalid) return;
-
     this.isLoading = true;
-
-    setTimeout(() => {
-      console.log('CONFIRMATION CODE FORM:', this.form.value);
-      this.isLoading = false;
-    }, 800);
+    this.error = null;
+    const { email, code } = this.form.value as any;
+    this.auth.verifyToken(email, code).subscribe({
+      next: (res) => {
+        if (res.valid) this.router.navigateByUrl('/auth/change-password');
+        else this.error = 'Invalid code';
+      },
+      error: () => { this.error = 'Unable to confirm code'; },
+      complete: () => { this.isLoading = false; },
+    });
   }
 }
