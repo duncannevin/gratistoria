@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UserActions } from './user.actions';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
@@ -48,10 +48,4 @@ export class UserEffects {
     )
   );
 
-  initFetch$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ROOT_EFFECTS_INIT),
-      map(() => UserActions.getUser())
-    )
-  );
 }
