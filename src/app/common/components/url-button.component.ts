@@ -1,7 +1,7 @@
 import {Component, HostBinding, Input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {NavigationEnd, Router, RouterModule} from '@angular/router';
-import {BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, Observable, startWith, tap} from 'rxjs';
+import {BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, Observable, startWith} from 'rxjs';
 
 @Component({
   selector: 'app-url-button',
@@ -39,7 +39,6 @@ export class UrlButtonComponent {
 
     this.showUnderline$ = combineLatest([this.path$, this.inputPath$]).pipe(
       map(([current, target]) => !!target && (current === target || current.startsWith(target + '/'))),
-      tap(console.log),
       distinctUntilChanged(),
     );
   }

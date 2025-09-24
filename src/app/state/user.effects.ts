@@ -52,9 +52,16 @@ export class UserEffects {
   // Show overlay while fetching user
   getUserOverlayShow$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.login, UserActions.logoutStart),
+      ofType(UserActions.login),
       map(() => OverlayActions.show({ message: 'Loading your experience...' }))
     )
+  );
+
+  getLogoutOverlayShow$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.logoutStart),
+      map(() => OverlayActions.show({ message: 'Logging you out...' }))
+    ),
   );
 
   // Hide overlay when user fetch completes
@@ -86,7 +93,10 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(UserActions.getUserFailure),
         tap(() => {
-          this.router.navigateByUrl('/auth');
+          const url = this.router.url || '';
+          if (url.startsWith('/s')) {
+            this.router.navigateByUrl('/auth');
+          }
         }),
       ),
     { dispatch: false }
