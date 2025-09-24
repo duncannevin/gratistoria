@@ -15,7 +15,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
   // Attach Authorization header if token exists
   const token = storage.getItem<string>('token');
   let authReq = req;
-  console.log('fooo', token);
   if (token) {
     authReq = req.clone({
       headers: (req.headers || new HttpHeaders()).set('Authorization', `Bearer ${token}`),

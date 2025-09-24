@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { DiaryActions } from './gratitude.actions';
 import { GratitudeService } from '../services/gratitude.service';
 import { catchError, map, of, switchMap } from 'rxjs';
+import { TodayActions } from './today.actions';
 
 @Injectable()
 export class DiaryEffects {
@@ -30,6 +31,14 @@ export class DiaryEffects {
           catchError(() => of(DiaryActions.createFailure({ error: 'Cannot create entry' }))),
         )
       )
+    )
+  );
+
+  // After create, refresh Today's entry view
+  refreshTodayAfterCreate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DiaryActions.createSuccess),
+      map(() => TodayActions.load()),
     )
   );
 }

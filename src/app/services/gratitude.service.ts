@@ -25,49 +25,7 @@ export class GratitudeService {
     this.loadFromStorage();
     if (this.db.length === 0) {
       // seed with sample data on first run
-      this.db = [
-        {
-          id: 1,
-          title: 'Morning Coffee Ritual',
-          description:
-            "There's something magical about the first sip—the warmth, aroma, and quiet before the day begins.",
-          mood: Mood.PEACEFUL,
-          date: this.dayString(1),
-          story: 1,
-        },
-        {
-          id: 2,
-          title: 'Unexpected Kindness',
-          description: 'A stranger held the door and smiled. Small gesture, big lift.',
-          mood: Mood.JOYFUL,
-          date: this.dayString(2),
-          story: 2,
-        },
-        {
-          id: 3,
-          title: 'Family Game Night',
-          description: 'Laughter and presence—instant memories.',
-          mood: Mood.GRATEFUL,
-          date: this.dayString(3),
-          story: 3,
-        },
-        {
-          id: 4,
-          title: 'Sunset Walk',
-          description: 'Orange and pink sky that reset my perspective.',
-          mood: Mood.REFLECTIVE,
-          date: this.dayString(4),
-          story: 4,
-        },
-        {
-          id: 5,
-          title: 'New Opportunities',
-          description: 'A promising project kicked off—stretching in the right ways.',
-          mood: Mood.HOPEFUL,
-          date: this.dayString(5),
-          story: 5,
-        },
-      ];
+      this.db = [];
       this.nextId = Math.max(...this.db.map(d => d.id)) + 1;
       this.saveToStorage();
     }
