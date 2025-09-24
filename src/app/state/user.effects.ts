@@ -52,7 +52,7 @@ export class UserEffects {
   // Show overlay while fetching user
   getUserOverlayShow$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.getUser, UserActions.loginSuccess),
+      ofType(UserActions.login, UserActions.logoutStart),
       map(() => OverlayActions.show({ message: 'Loading your experience...' }))
     )
   );
@@ -60,7 +60,7 @@ export class UserEffects {
   // Hide overlay when user fetch completes
   getUserOverlayHide$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.getUserSuccess, UserActions.getUserFailure),
+      ofType(UserActions.loginFailure, UserActions.loginSuccess, UserActions.logout, UserActions.logoutFailure),
       map(() => OverlayActions.hide())
     )
   );
