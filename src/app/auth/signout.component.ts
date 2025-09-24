@@ -1,8 +1,9 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {Store} from '@ngrx/store';
 import {UserActions} from '../state/user.actions';
+import {LocalStorageService} from '../services/local-storage.service';
 
 @Component({
   standalone: true,
@@ -28,10 +29,11 @@ import {UserActions} from '../state/user.actions';
   `,
   imports: [...Card, ButtonComponent]
 })
-export class SignOutComponent {
+export class SignOutComponent implements OnInit {
   private store = inject(Store);
-  constructor() {
-    // best-effort signout on page open
+  private localStorageService = inject(LocalStorageService);
+
+  ngOnInit() {
     this.store.dispatch(UserActions.logoutStart());
   }
 }

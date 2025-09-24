@@ -13,6 +13,7 @@ import { StoryEffects } from './state/story.effects';
 import { userFeature } from './state/user.reducer';
 import { storyPageFeature } from './state/story-page.reducer';
 import { StoryPageEffects } from './state/story-page.effects';
+import { overlayFeature } from './state/overlay.reducer';
 import { UserEffects } from './state/user.effects';
 
 import { routes } from './app.routes';
@@ -30,6 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideState(storyFeature),
     provideState(userFeature),
     provideState(storyPageFeature),
+    provideState(overlayFeature),
     provideEffects(DiaryEffects),
     provideEffects(TodayEffects),
     provideEffects(StoryEffects),

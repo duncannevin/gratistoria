@@ -69,10 +69,7 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(UserActions.getUserFailure),
         tap(() => {
-          const url = this.router.url || '';
-          if (url.startsWith('/s')) {
-            this.router.navigateByUrl('/auth/login');
-          }
+          this.router.navigateByUrl('/auth');
         }),
       ),
     { dispatch: false }
@@ -99,5 +96,4 @@ export class UserEffects {
       ),
     { dispatch: false }
   );
-
 }

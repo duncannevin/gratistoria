@@ -128,7 +128,7 @@ export class SignupComponent {
   constructor(private readonly fb: FormBuilder) {
     this.form = fb.group({
       email: ['', [Validators.required, Validators.email]],
-      username: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
+      username: ['', [Validators.required]],
       password: ['', [
         Validators.required,
         Validators.minLength(6),

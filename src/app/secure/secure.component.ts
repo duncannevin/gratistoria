@@ -1,8 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {ButtonComponent} from '../common/components/button.component';
 import {UrlButtonComponent} from '../common/components/url-button.component';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {Store} from '@ngrx/store';
+import {selectUser} from '../state/user.selectors';
 
 @Component({
   selector: 'app-secure',
@@ -46,7 +49,7 @@ import {UrlButtonComponent} from '../common/components/url-button.component';
 
           <div class="flex items-center space-x-4">
             <span class="text-sm text-muted-foreground">
-              Welcome, TODO
+              Welcome, {{ userName() }}
             </span>
             <app-button
               href="/auth/signout"
@@ -76,4 +79,8 @@ import {UrlButtonComponent} from '../common/components/url-button.component';
   imports: [ButtonComponent, CommonModule, RouterModule, UrlButtonComponent],
 })
 export class SecureComponent {
+  private store = inject(Store);
+  private userSel = toSignal(this.store.select(selectUser));
+
+  userName = computed(() => this.userSel()?.name)
 }

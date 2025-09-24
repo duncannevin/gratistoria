@@ -57,16 +57,16 @@ import {Router} from '@angular/router';
 
           <app-card-footer>
             <app-button type="submit" variant="default" size="md" [full]="true" [disabled]="isLoading || form.invalid">
-              {{ isLoading ? 'Signing in...' : 'Sign in' }}
+              {{ isLoading ? 'Confirming the code...' : 'Confirm' }}
             </app-button>
 
             <div class="mt-6 text-center space-y-2">
               <app-button
                 size="sm"
                 variant="link"
-                href="/auth/forgot-password"
+                href="/auth/login"
               >
-                Back to forgot password
+                Back to login
               </app-button>
             </div>
           </app-card-footer>
