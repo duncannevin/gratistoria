@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { UserActions } from './state/user.actions';
 import { selectResolved } from './state/user.selectors';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { LocalStorageService } from './services/local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -26,10 +27,16 @@ export class AppComponent implements OnInit {
   title = 'gratistoria';
 
   private store = inject(Store);
+  private storage = inject(LocalStorageService);
   readonly resolved = toSignal(this.store.select(selectResolved), { initialValue: false });
 
   ngOnInit() {
-    // Trigger user profile fetch on app start
-    this.store.dispatch(UserActions.getUser());
+    // Only attempt fetch if a token exists; else mark as resolved unauthenticated
+    const token = this.storage.getItem<string>('token');
+    if (token) {
+      this.store.dispatch(UserActions.getUser());
+    } else {
+      this.store.dispatch(UserActions.getUserFailure({ error: 'No token' }));
+    }
   }
 }
