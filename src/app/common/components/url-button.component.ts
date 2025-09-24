@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, HostBinding, Input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {NavigationEnd, Router, RouterModule} from '@angular/router';
-import {distinctUntilChanged, filter, map, Observable, startWith} from 'rxjs';
+import {BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, Observable, startWith, tap} from 'rxjs';
 
 @Component({
   selector: 'app-url-button',
@@ -17,7 +17,11 @@ import {distinctUntilChanged, filter, map, Observable, startWith} from 'rxjs';
   imports: [CommonModule, RouterModule],
 })
 export class UrlButtonComponent {
-  @Input() path = ''
+  private readonly inputPath$ = new BehaviorSubject<string>('');
+
+  @Input() set path(v: string) {
+    this.inputPath$.next(v || '');
+  }
 
   path$: Observable<string>;
 
@@ -33,8 +37,10 @@ export class UrlButtonComponent {
       distinctUntilChanged()
     );
 
-    this.showUnderline$ = this.path$.pipe(
-      map((p) => p === this.path),
+    this.showUnderline$ = combineLatest([this.path$, this.inputPath$]).pipe(
+      map(([current, target]) => !!target && (current === target || current.startsWith(target + '/'))),
+      tap(console.log),
+      distinctUntilChanged(),
     );
   }
 }
