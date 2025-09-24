@@ -7,6 +7,7 @@ import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { LoginResponseModel } from '../models/login-response.model';
 import { UserModel } from '../models/user.model';
 import { Router } from '@angular/router';
+import { OverlayActions } from './overlay.actions';
 
 @Injectable()
 export class UserEffects {
@@ -45,6 +46,22 @@ export class UserEffects {
           catchError((err) => of(UserActions.getUserFailure({ error: err?.message || 'Fetch user failed' }))),
         )
       )
+    )
+  );
+
+  // Show overlay while fetching user
+  getUserOverlayShow$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.getUser, UserActions.loginSuccess),
+      map(() => OverlayActions.show({ message: 'Loading your experience...' }))
+    )
+  );
+
+  // Hide overlay when user fetch completes
+  getUserOverlayHide$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.getUserSuccess, UserActions.getUserFailure),
+      map(() => OverlayActions.hide())
     )
   );
 

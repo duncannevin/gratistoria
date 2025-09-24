@@ -11,7 +11,7 @@ import { LocalStorageService } from './services/local-storage.service';
   selector: 'app-root',
   imports: [RouterOutlet],
   template: `
-    @if (!resolved() || overlayVisible()) {
+    @if (overlayVisible()) {
       <div class="min-h-screen flex items-center justify-center">
         <div class="text-center text-muted-foreground">
           <div class="text-3xl mb-3">✨</div>
@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
 
   private store = inject(Store);
   private storage = inject(LocalStorageService);
-  readonly resolved = toSignal(this.store.select(selectResolved), { initialValue: false });
   readonly overlayVisible = toSignal(this.store.select(selectVisible), { initialValue: false });
   readonly overlayMessage = toSignal(this.store.select(selectMessage), { initialValue: null });
 
