@@ -43,5 +43,5 @@ Thumbs.db
 
 # infra
 *.template.yaml
-/.env
+.env
 cdk.out
