@@ -29,7 +29,10 @@
       "@enums/*": ["app/common/enums/*"],
       "@common/*": ["app/common/*"],
       "@env/*": ["environments/*"],
-      "@app/*": ["app/*"]
+      "@app/*": ["app/*"],
+      "@guards/*": ["app/guards/*"],
+      "@auth/*": ["app/auth/*"],
+      "@secure/*": ["app/secure/*"]
     }
   },
   "angularCompilerOptions": {

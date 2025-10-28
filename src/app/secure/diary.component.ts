@@ -5,7 +5,7 @@ import {Gratitude} from '@models/gratitude.model';
 import {Observable, of} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {DiaryActions, selectDiaryErrorAll, selectDiaryHasMore, selectDiaryItems, selectDiaryLoadingAll, selectDiaryLoadingMore} from '../state';
+import {DiaryActions, selectDiaryErrorAll, selectDiaryHasMore, selectDiaryItems, selectDiaryLoadingAll, selectDiaryLoadingMore} from '@state';
 import {BookIcon, LucideAngularModule} from 'lucide-angular';
 
 @Component({

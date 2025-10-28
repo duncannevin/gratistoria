@@ -5,7 +5,7 @@ import {Card, ButtonComponent, InputComponent, PulseCardComponent} from '../comm
 import {DateTimePipe} from '@pipes/date-time.pipe';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {DiaryActions, TodayActions, selectDiaryCreating, selectToday, selectTodayError, selectTodayLoading} from '../state';
+import {DiaryActions, TodayActions, selectDiaryCreating, selectToday, selectTodayError, selectTodayLoading} from '@state';
 import moment from 'moment';
 
 @Component({
