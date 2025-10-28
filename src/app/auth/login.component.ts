@@ -6,7 +6,7 @@ import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
 import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {UserActions} from '../state/user.actions';
+import {UserActions} from '../state/user';
 import {LoginResponseModel} from '../models/login-response.model';
 
 @Component({

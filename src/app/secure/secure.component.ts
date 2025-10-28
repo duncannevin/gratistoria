@@ -5,7 +5,7 @@ import {ButtonComponent} from '../common/components/button.component';
 import {UrlButtonComponent} from '../common/components/url-button.component';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
-import {selectUser} from '../state/user.selectors';
+import {selectUser} from '../state/user';
 
 @Component({
   selector: 'app-secure',

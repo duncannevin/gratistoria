@@ -5,14 +5,10 @@ import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
 import {DateTimePipe} from '../common/pipes/date-time.pipe';
-import {Gratitude} from '../models/gratitude.model';
 import {PulseCardComponent} from '../common/components/pulse-card.component';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {DiaryActions} from '../state/gratitude.actions';
-import {selectCreating} from '../state/gratitude.selectors';
-import {TodayActions} from '../state/today.actions';
-import {selectError, selectLoading, selectToday} from '../state/today.selectors';
+import {DiaryActions, selectCreating, TodayActions, selectError, selectLoading, selectToday} from '../state/gratitude';
 import moment from 'moment';
 
 @Component({

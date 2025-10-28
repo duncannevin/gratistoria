@@ -6,8 +6,8 @@ import {DiaryCardComponent} from '../common/components/diary-card.component';
 import {Observable, of} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {DiaryActions} from '../state/gratitude.actions';
-import {selectErrorAll, selectHasMore, selectItems, selectLoadingAll, selectLoadingMore} from '../state/gratitude.selectors';
+import {DiaryActions, selectErrorAll, selectHasMore, selectItems, selectLoadingAll, selectLoadingMore} from '../state/gratitude';
+import {BookIcon, LucideAngularModule} from 'lucide-angular';
 
 @Component({
   standalone: true,
@@ -31,7 +31,7 @@ import {selectErrorAll, selectHasMore, selectItems, selectLoadingAll, selectLoad
       } @else {
         <div class="inline-block mb-6 rounded-lg w-[742px] max-w-full m-auto">
           <div class="flex items-center gap-3 mb-2">
-            <!--              <BookOpen className="w-6 h-6 text-primary" />-->
+            <lucide-icon [img]="BookIcon" [size]="16"></lucide-icon>
             <h4 class="text-foreground">My Gratitude Diary</h4>
           </div>
           <p class="text-muted-foreground">
@@ -42,20 +42,6 @@ import {selectErrorAll, selectHasMore, selectItems, selectLoadingAll, selectLoad
           <div class="mb-4">
             <app-diary-card [gratitude]="gratitude"></app-diary-card>
           </div>
-          <!--            <app-card className="w-[742px] max-w-full">-->
-            <!--              <app-card-header>-->
-            <!--                <div class="flex items-center gap-3">-->
-            <!--                  <div class="flex items-center gap-2 text-sm text-muted-foreground">-->
-            <!--                    &lt;!&ndash;                <Calendar className="w-4 h-4" />&ndash;&gt;-->
-            <!--                    {{ entry.date | appDateTime }}-->
-            <!--                  </div>-->
-            <!--                  <app-badge variant="secondary" className="flex items-center gap-1">-->
-            <!--                    <span>{{ entry.mood + 'TODO' }}</span>-->
-            <!--                    <span class="capitalize">{{ entry.mood }}</span>-->
-            <!--                  </app-badge>-->
-            <!--                </div>-->
-            <!--              </app-card-header>-->
-            <!--            </app-card>-->
         }
         <div class="text-center mt-6" *ngIf="hasMore()">
           <button
@@ -69,7 +55,7 @@ import {selectErrorAll, selectHasMore, selectItems, selectLoadingAll, selectLoad
       }
     </div>
   `,
-  imports: [CommonModule, ...Card, DiaryCardComponent],
+  imports: [CommonModule, ...Card, DiaryCardComponent, LucideAngularModule],
 })
 export class DiaryComponent {
   private store = inject(Store);
@@ -94,4 +80,6 @@ export class DiaryComponent {
   onLoadMore() {
     this.store.dispatch(DiaryActions.loadMore());
   }
+
+  protected readonly BookIcon = BookIcon;
 }
