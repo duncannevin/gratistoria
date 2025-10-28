@@ -4,12 +4,10 @@ import {Card} from '../common/components/card.component';
 import {Gratitude} from '../models/gratitude.model';
 import {DiaryCardComponent} from '../common/components/diary-card.component';
 import {Observable, of} from 'rxjs';
-import {Story} from '../models/story.model';
-import {StoryService} from '../services/story.service';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {DiaryActions} from '../state/gratitude.actions';
-import {selectErrorAll, selectItems, selectLoadingAll} from '../state/gratitude.selectors';
+import {selectErrorAll, selectHasMore, selectItems, selectLoadingAll, selectLoadingMore} from '../state/gratitude.selectors';
 
 @Component({
   standalone: true,
@@ -42,10 +40,7 @@ import {selectErrorAll, selectItems, selectLoadingAll} from '../state/gratitude.
         </div>
         @for (gratitude of value(); track gratitude.id) {
           <div class="mb-4">
-            <app-diary-card
-              [gratitude]="gratitude"
-              [story]="getStory(gratitude.story) | async"
-            ></app-diary-card>
+            <app-diary-card [gratitude]="gratitude"></app-diary-card>
           </div>
           <!--            <app-card className="w-[742px] max-w-full">-->
             <!--              <app-card-header>-->
@@ -62,6 +57,15 @@ import {selectErrorAll, selectItems, selectLoadingAll} from '../state/gratitude.
             <!--              </app-card-header>-->
             <!--            </app-card>-->
         }
+        <div class="text-center mt-6" *ngIf="hasMore()">
+          <button
+            class="px-4 py-2 rounded-md bg-primary text-primary-foreground disabled:opacity-60"
+            [disabled]="loadingMore()"
+            (click)="onLoadMore()"
+          >
+            {{ loadingMore() ? 'Loading more…' : 'Load more' }}
+          </button>
+        </div>
       }
     </div>
   `,
@@ -69,24 +73,25 @@ import {selectErrorAll, selectItems, selectLoadingAll} from '../state/gratitude.
 })
 export class DiaryComponent {
   private store = inject(Store);
-  private storyService = inject(StoryService);
 
   private itemsSel = toSignal(this.store.select(selectItems), { initialValue: [] as Gratitude[] });
   private loadingAllSel = toSignal(this.store.select(selectLoadingAll), { initialValue: true });
+  private loadingMoreSel = toSignal(this.store.select(selectLoadingMore), { initialValue: false });
   private errorAllSel = toSignal(this.store.select(selectErrorAll), { initialValue: null });
+  private hasMoreSel = toSignal(this.store.select(selectHasMore), { initialValue: false });
 
   readonly value = computed<Gratitude[] | null>(() => this.itemsSel());
   readonly loading = computed<boolean>(() => this.loadingAllSel());
+  readonly loadingMore = computed<boolean>(() => this.loadingMoreSel());
   readonly error = computed<string | null>(() => this.errorAllSel());
+  readonly hasMore = computed<boolean>(() => this.hasMoreSel());
 
   constructor() {
     this.store.dispatch(DiaryActions.loadAll());
   }
 
-  getStory(id?: number): Observable<Story | null> {
-    if (!id) return of(null);
-    return this.storyService.getStoryById(id);
-  }
-
   // uses store for data; no local load
+  onLoadMore() {
+    this.store.dispatch(DiaryActions.loadMore());
+  }
 }

@@ -1,127 +1,154 @@
 import { Injectable } from '@angular/core';
-import dayjs from 'dayjs';
-import type { Gratitude } from '../models/gratitude.model';
-import {Mood} from '../common/enums/mood.enum';
-import {delay, map, Observable, of} from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import moment from 'moment';
+import { BehaviorSubject, catchError, map, Observable, of, take, tap } from 'rxjs';
+import { Gratitude } from '../models/gratitude.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class GratitudeService {
-  private readonly STORAGE_KEY = 'gratistoria.gratitudes.v1';
-  private readonly STORAGE_ID_KEY = 'gratistoria.gratitudes.nextId.v1';
-  // --- utils ---------------------------------------------------------------
-  private delay(ms: number) {
-    return new Promise<void>(resolve => setTimeout(resolve, ms));
-  }
-  /** YYYY-MM-DD in local time */
-  private dayString(daysAgo = 0) {
-    return dayjs().subtract(daysAgo, 'day').format('YYYY-MM-DD');
+  private apiUrl = `${environment.apiUrl}`;
+  private unauthorizedEntry = '';
+  private diaryPaginationKey = '';
+
+  private diaryEntries = new BehaviorSubject<any[]>([]);
+  diaryEntries$ = this.diaryEntries.asObservable();
+  private moreDiaryEntries = new BehaviorSubject(false);
+  moreDiaryEntries$ = this.moreDiaryEntries.asObservable();
+
+  constructor(private readonly http: HttpClient) {
   }
 
-  // --- mock db -------------------------------------------------------------
-  private nextId = Number(dayjs().valueOf());
-  private db: Gratitude[] = [];
+  setUnauthorizedEntry(entry: string) {
+    this.unauthorizedEntry = entry;
+  }
 
-  constructor() {
-    this.loadFromStorage();
-    if (this.db.length === 0) {
-      // seed with sample data on first run
-      this.db = [];
-      this.nextId = Math.max(...this.db.map(d => d.id)) + 1;
-      this.saveToStorage();
+  saveUnauthorizedEntry() {
+    if (this.unauthorizedEntry) {
+      return this.createGratitude({ entry: this.unauthorizedEntry });
     }
+    return of(null);
   }
 
-  private loadFromStorage() {
-    try {
-      const raw = localStorage.getItem(this.STORAGE_KEY);
-      const idRaw = localStorage.getItem(this.STORAGE_ID_KEY);
-      if (raw) this.db = JSON.parse(raw) as Gratitude[];
-      if (idRaw) this.nextId = Number(idRaw) || this.nextId;
-      if (!idRaw && this.db.length) {
-        this.nextId = Math.max(...this.db.map(d => d.id)) + 1;
-      }
-    } catch {
-      // ignore parse errors
-      this.db = [];
+  createGratitude(gratitude: { entry: string }) {
+    const datetime = moment().format('YYYY-MM-DD HH:mm:ss');
+    return this.http.post(`${this.apiUrl}/daily`, {
+      entry: gratitude.entry,
+      datetime,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    });
+  }
+
+  setDiary(): void {
+    this.http.get<{items: any[], key: string}>(`${this.apiUrl}/diary`)
+      .pipe(
+        tap(response => {
+          this.diaryPaginationKey = response.key || '';
+          this.diaryEntries.next(response.items || []);
+          this.moreDiaryEntries.next(this.diaryPaginationKey.length > 0);
+        }),
+        map(response => response.items || []),
+        take(1),
+      ).subscribe();
+  }
+
+  setMoreDiaryEntries(): void {
+    if (!this.moreDiaryEntries) {
+      return;
     }
+
+    this.http.get<{items: any[], key: string}>(`${this.apiUrl}/diary?paginationToken=${this.diaryPaginationKey}`)
+      .pipe(
+        tap(response => {
+          this.diaryPaginationKey = response.key || '';
+          this.diaryEntries.next([...this.diaryEntries.value, ...response.items]);
+          this.moreDiaryEntries.next(this.diaryPaginationKey.length > 0)
+        }),
+        map(response => response.items || []),
+        take(1),
+      ).subscribe();
   }
 
-  private saveToStorage() {
-    try {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.db));
-      localStorage.setItem(this.STORAGE_ID_KEY, String(this.nextId));
-    } catch {
-      // ignore quota errors in dev
-    }
+  // --- New public API used by NgRx effects ---------------------------------
+
+  /**
+   * Load a page of diary entries. If `paginationToken` is provided, fetches the next page.
+   * Returns mapped items and the next token (or null when no more pages).
+   */
+  getPage(paginationToken?: string): Observable<{ items: Gratitude[]; nextToken: string | null }> {
+    const url = paginationToken
+      ? `${this.apiUrl}/diary?paginationToken=${encodeURIComponent(paginationToken)}`
+      : `${this.apiUrl}/diary`;
+
+    return this.http
+      .get<{ items?: any[]; key?: string }>(url)
+      .pipe(
+        map((res) => ({
+          items: (res.items ?? []).map((it) => this.toModel(it)),
+          nextToken: res.key ?? null,
+        })),
+      );
   }
 
-  create(entry: Omit<Gratitude, 'id'>): Observable<Gratitude | null> {
-    return of(null).pipe(
-      delay(400), // simulate latency
-      map(() => {
-        const withDate: Omit<Gratitude, 'id'> = {
-          ...entry,
-          // Ensure created entries are stamped with today's date
-          date: this.dayString(0),
-        };
-        const newEntry: Gratitude = { id: this.nextId++, ...withDate };
-        this.db = [newEntry, ...this.db];
-        this.saveToStorage();
-        return newEntry; // or `null` to signal failure paths
-      })
-    );
-  }
-
-  getToday(): Observable<Gratitude | null> {
-    const today = this.dayString(0);
-    return of(null).pipe(
-      delay(500), // simulate latency
-      map(() => this.db.find(e => e.date === today) ?? null)
-    );
-  }
-
-  // --- read ---------------------------------------------------------------
+  /** Back-compat helper: returns only items for first page. */
   getAll(): Observable<Gratitude[]> {
-    return of(null).pipe(
-      delay(1200),
-      map(() =>
-        [...this.db].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
-      )
-    );
+    return this.getPage().pipe(map((r) => r.items));
   }
 
-  // --- additional mock endpoints -----------------------------------------
-  getById(id: number): Observable<Gratitude | null> {
-    return of(null).pipe(
-      delay(300),
-      map(() => this.db.find(e => e.id === id) ?? null),
-    );
+  /** Create today's gratitude entry. Returns created model or null. */
+  create(entry: string): Observable<Gratitude | null> {
+    const datetime = moment().format('YYYY-MM-DD HH:mm:ss');
+    const payload = {
+      entry,
+      datetime,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    } as const;
+
+    return this.http
+      .post<any>(`${this.apiUrl}/daily`, payload)
+      .pipe(
+        map((res) => this.maybeModel(res)),
+        catchError((_err: HttpErrorResponse) => of(null)),
+      );
   }
 
-  update(id: number, changes: Partial<Omit<Gratitude, 'id'>>): Observable<Gratitude | null> {
-    return of(null).pipe(
-      delay(400),
-      map(() => {
-        const idx = this.db.findIndex(e => e.id === id);
-        if (idx === -1) return null;
-        const updated: Gratitude = { ...this.db[idx], ...changes, id } as Gratitude;
-        this.db = [updated, ...this.db.filter(e => e.id !== id)];
-        this.saveToStorage();
-        return updated;
-      }),
-    );
+  /** Load today's entry if it exists; returns null for 404/empty. */
+  getToday(): Observable<Gratitude | null> {
+    const today = moment().format('YYYY-MM-DD');
+    return this.http
+      .get<any>(`${this.apiUrl}/today?datetime=${today}`)
+      .pipe(
+        map((res) => this.maybeModel(res)),
+        catchError((_err: HttpErrorResponse) => of(null)),
+      );
   }
 
-  delete(id: number): Observable<boolean> {
-    return of(null).pipe(
-      delay(300),
-      map(() => {
-        const before = this.db.length;
-        this.db = this.db.filter(e => e.id !== id);
-        const removed = this.db.length < before;
-        if (removed) this.saveToStorage();
-        return removed;
-      }),
-    );
+  // --- Mapping helpers -----------------------------------------------------
+
+  private maybeModel(res: any): Gratitude | null {
+    try {
+      return this.toModel(res);
+    } catch {
+      return null;
+    }
+  }
+
+  /** Best-effort mapping from API object to Gratitude model. */
+  private toModel(obj: any): Gratitude {
+    // Map strictly to the expected API shape with some fallbacks
+    const id: string = String(obj.id ?? obj.entryId ?? '');
+    const systemTimestamp: string = String(obj.systemTimestamp ?? obj.system_time ?? obj.createdAt ?? '');
+    const clientTimezone: string = String(obj.clientTimezone ?? obj.timezone ?? '');
+    const userId: string = String(obj.userId ?? obj.ownerId ?? '');
+    const entry: string = String(obj.entry ?? obj.text ?? '');
+    const timestamp: string = String(obj.timestamp ?? obj.datetime ?? obj.date ?? '');
+
+    if (!id || !entry) {
+      throw new Error('Invalid gratitude shape');
+    }
+
+    return { id, systemTimestamp, clientTimezone, userId, entry, timestamp };
   }
 }

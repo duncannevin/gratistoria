@@ -4,10 +4,8 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {Card} from '../common/components/card.component';
 import {ButtonComponent} from '../common/components/button.component';
 import {InputComponent} from '../common/components/input.component';
-import {BadgeComponent} from '../common/components/badge.component';
 import {DateTimePipe} from '../common/pipes/date-time.pipe';
 import {Gratitude} from '../models/gratitude.model';
-import {Mood, stringToMood} from '../common/enums/mood.enum';
 import {PulseCardComponent} from '../common/components/pulse-card.component';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -35,16 +33,9 @@ import dayjs from 'dayjs';
           </app-card-description>
         </app-card-header>
         <app-card-content className="space-y-4">
-          <div>
-            <h3 class="text-lg mb-2">{{ value()!.title }}</h3>
-            <p class="text-muted-foreground leading-relaxed">{{ value()!.description }}</p>
-          </div>
-
-          <div class="flex items-center justify-center" *ngIf="selectedMood">
-            <app-badge [className]="'px-4 py-2 ' + selectedMood!.color">
-              <span class="text-lg mr-2">{{ selectedMood!.emoji }}</span>
-              <span>{{ selectedMood!.label }}</span>
-            </app-badge>
+          <div class="space-y-2 text-center">
+            <div class="text-sm text-muted-foreground">{{ value()!.timestamp | appDateTime }}</div>
+            <p class="text-foreground leading-relaxed whitespace-pre-line">{{ value()!.entry }}</p>
           </div>
 
           <div class="text-center text-sm text-muted-foreground">
@@ -120,7 +111,7 @@ import dayjs from 'dayjs';
     }
     </div>
   `,
-  imports: [...Card, CommonModule, ReactiveFormsModule, ButtonComponent, InputComponent, BadgeComponent, DateTimePipe, PulseCardComponent],
+  imports: [...Card, CommonModule, ReactiveFormsModule, ButtonComponent, InputComponent, DateTimePipe, PulseCardComponent],
 })
 export class TodayComponent {
   private store = inject(Store);
@@ -167,6 +158,8 @@ export class TodayComponent {
   onSubmit() {
     if (this.form.invalid) return;
 
-    this.store.dispatch(DiaryActions.create({ entry: this.form.value as Omit<Gratitude, 'id'> }));
+    const { title, description, mood } = this.form.value as { title: string; description: string; mood: string };
+    const entry = `${title}\n\n${description}`.trim();
+    this.store.dispatch(DiaryActions.create({ entry }));
   }
 }
