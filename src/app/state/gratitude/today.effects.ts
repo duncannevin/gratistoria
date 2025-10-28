@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TodayActions } from './today.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { GratitudeService } from '../services/gratitude.service';
+import { GratitudeService } from '../../services/gratitude.service';
 
 @Injectable()
 export class TodayEffects {

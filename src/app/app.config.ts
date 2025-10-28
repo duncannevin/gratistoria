@@ -4,17 +4,7 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideState } from '@ngrx/store';
-import { diaryFeature } from './state/gratitude.reducer';
-import { DiaryEffects } from './state/gratitude.effects';
-import { todayFeature } from './state/today.reducer';
-import { TodayEffects } from './state/today.effects';
-import { storyFeature } from './state/story.reducer';
-import { StoryEffects } from './state/story.effects';
-import { userFeature } from './state/user.reducer';
-import { storyPageFeature } from './state/story-page.reducer';
-import { StoryPageEffects } from './state/story-page.effects';
-import { overlayFeature } from './state/overlay.reducer';
-import { UserEffects } from './state/user.effects';
+import { diaryFeature, DiaryEffects, todayFeature, TodayEffects, storyFeature, StoryEffects, storyPageFeature, StoryPageEffects, userFeature, UserEffects, overlayFeature } from './state';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';

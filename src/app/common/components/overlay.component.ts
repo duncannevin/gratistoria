@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { selectMessage, selectVisible, selectIcon } from '../../state/overlay.selectors';
+import { selectMessage, selectVisible, selectIcon } from '../../state';
 
 @Component({
   selector: 'app-overlay',
@@ -24,4 +24,3 @@ export class OverlayComponent {
   readonly message = toSignal(this.store.select(selectMessage), { initialValue: null });
   readonly icon = toSignal(this.store.select(selectIcon), { initialValue: null });
 }
-

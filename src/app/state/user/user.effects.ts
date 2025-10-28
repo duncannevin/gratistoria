@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UserActions } from './user.actions';
-import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { LoginResponseModel } from '../models/login-response.model';
-import { UserModel } from '../models/user.model';
+import { LoginResponseModel } from '../../models/login-response.model';
+import { UserModel } from '../../models/user.model';
 import { Router } from '@angular/router';
-import { OverlayActions } from './overlay.actions';
-import {LocalStorageService} from '../services/local-storage.service';
+import { OverlayActions } from '../overlay/overlay.actions';
+import {LocalStorageService} from '../../services/local-storage.service';
 
 @Injectable()
 export class UserEffects {
