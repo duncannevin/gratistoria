@@ -6,7 +6,7 @@ import {DiaryCardComponent} from '../common/components/diary-card.component';
 import {Observable, of} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {DiaryActions, selectErrorAll, selectHasMore, selectItems, selectLoadingAll, selectLoadingMore} from '../state';
+import {DiaryActions, selectDiaryErrorAll, selectDiaryHasMore, selectDiaryItems, selectDiaryLoadingAll, selectDiaryLoadingMore} from '../state';
 import {BookIcon, LucideAngularModule} from 'lucide-angular';
 
 @Component({
@@ -60,11 +60,11 @@ import {BookIcon, LucideAngularModule} from 'lucide-angular';
 export class DiaryComponent {
   private store = inject(Store);
 
-  private itemsSel = toSignal(this.store.select(selectItems), { initialValue: [] as Gratitude[] });
-  private loadingAllSel = toSignal(this.store.select(selectLoadingAll), { initialValue: true });
-  private loadingMoreSel = toSignal(this.store.select(selectLoadingMore), { initialValue: false });
-  private errorAllSel = toSignal(this.store.select(selectErrorAll), { initialValue: null });
-  private hasMoreSel = toSignal(this.store.select(selectHasMore), { initialValue: false });
+  private itemsSel = toSignal(this.store.select(selectDiaryItems), { initialValue: [] as Gratitude[] });
+  private loadingAllSel = toSignal(this.store.select(selectDiaryLoadingAll), { initialValue: true });
+  private loadingMoreSel = toSignal(this.store.select(selectDiaryLoadingMore), { initialValue: false });
+  private errorAllSel = toSignal(this.store.select(selectDiaryErrorAll), { initialValue: null });
+  private hasMoreSel = toSignal(this.store.select(selectDiaryHasMore), { initialValue: false });
 
   readonly value = computed<Gratitude[] | null>(() => this.itemsSel());
   readonly loading = computed<boolean>(() => this.loadingAllSel());

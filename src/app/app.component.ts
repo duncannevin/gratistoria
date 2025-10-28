@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { UserActions, selectResolved, selectVisible, selectMessage } from './state';
+import { UserActions, selectVisible, selectMessage } from './state';
 import { OverlayComponent } from './common/components/overlay.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { LocalStorageService } from './services/local-storage.service';

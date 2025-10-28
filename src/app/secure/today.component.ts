@@ -8,7 +8,7 @@ import {DateTimePipe} from '../common/pipes/date-time.pipe';
 import {PulseCardComponent} from '../common/components/pulse-card.component';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {DiaryActions, selectCreating, TodayActions, selectError, selectLoading, selectToday} from '../state';
+import {DiaryActions, TodayActions, selectDiaryCreating, selectToday, selectTodayError, selectTodayLoading} from '../state';
 import moment from 'moment';
 
 @Component({
@@ -115,9 +115,9 @@ export class TodayComponent {
   readonly today = moment().toDate();
 
   private todaySel = toSignal(this.store.select(selectToday), { initialValue: null });
-  private loadingTodaySel = toSignal(this.store.select(selectLoading), { initialValue: true });
-  private creatingSel = toSignal(this.store.select(selectCreating), { initialValue: false });
-  private errorTodaySel = toSignal(this.store.select(selectError), { initialValue: null });
+  private loadingTodaySel = toSignal(this.store.select(selectTodayLoading), { initialValue: true });
+  private creatingSel = toSignal(this.store.select(selectDiaryCreating), { initialValue: false });
+  private errorTodaySel = toSignal(this.store.select(selectTodayError), { initialValue: null });
 
   readonly value = computed(() => this.todaySel());
   readonly loading = computed(() => this.loadingTodaySel() || this.creatingSel());

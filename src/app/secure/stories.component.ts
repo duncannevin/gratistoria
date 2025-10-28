@@ -6,7 +6,7 @@ import {StoryCardComponent} from '../common/components/story-card.component';
 import {PulseCardComponent} from '../common/components/pulse-card.component';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {StoryActions, selectErrorAll, selectLoadingAll, selectStories} from '../state';
+import {StoryActions, selectStoryErrorAll, selectStoryLoadingAll, selectStories} from '../state';
 
 @Component({
   standalone: true,
@@ -60,8 +60,8 @@ export class StoriesComponent {
   private store = inject(Store);
 
   private storiesSel = toSignal(this.store.select(selectStories), { initialValue: [] as Story[] });
-  private loadingSel = toSignal(this.store.select(selectLoadingAll), { initialValue: true });
-  private errorSel = toSignal(this.store.select(selectErrorAll), { initialValue: null });
+  private loadingSel = toSignal(this.store.select(selectStoryLoadingAll), { initialValue: true });
+  private errorSel = toSignal(this.store.select(selectStoryErrorAll), { initialValue: null });
 
   readonly value = computed(() => this.storiesSel());
   readonly loading = computed(() => this.loadingSel());

@@ -7,7 +7,7 @@ import {map} from 'rxjs';
 import {ButtonComponent} from '../common/components/button.component';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
-import {StoryPageActions, selectError, selectLoading, selectStory} from '../state';
+import {StoryPageActions, selectStoryPageError, selectStoryPageLoading, selectStory} from '../state';
 
 @Component({
   standalone: true,
@@ -121,8 +121,8 @@ export class StoryComponent {
 
   private idSel = toSignal(this.route.paramMap.pipe(map((pm) => Number(pm.get('id') ?? '0'))), { initialValue: 0 });
   private storySel = toSignal(this.store.select(selectStory), { initialValue: null as Story | null });
-  private loadingSel = toSignal(this.store.select(selectLoading), { initialValue: true });
-  private errorSel = toSignal(this.store.select(selectError), { initialValue: null });
+  private loadingSel = toSignal(this.store.select(selectStoryPageLoading), { initialValue: true });
+  private errorSel = toSignal(this.store.select(selectStoryPageError), { initialValue: null });
 
   readonly value = computed(() => this.storySel());
   readonly loading = computed(() => this.loadingSel());
