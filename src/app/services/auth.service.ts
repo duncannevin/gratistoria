@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { LoginResponseModel } from '../models/login-response.model';
-import { SignupResponseModel } from '../models/signup-response.model';
-import { ForgotPasswordResponseModel } from '../models/forgot-password-response.model';
-import { VerifyTokenResponseModel } from '../models/verify-token-response.model';
-import { ResetPasswordResponseModel } from '../models/reset-password-response.model';
-import { ChangePasswordResponseModel } from '../models/change-password-response.model';
-import { SignupFormModel } from '../models/signup-form.model';
-import { ChangePasswordFormModel } from '../models/change-password-form.model';
+import { environment } from '@env/environment';
+import { LoginResponseModel } from '@models/login-response.model';
+import { SignupResponseModel } from '@models/signup-response.model';
+import { ForgotPasswordResponseModel } from '@models/forgot-password-response.model';
+import { VerifyTokenResponseModel } from '@models/verify-token-response.model';
+import { ResetPasswordResponseModel } from '@models/reset-password-response.model';
+import { ChangePasswordResponseModel } from '@models/change-password-response.model';
+import { SignupFormModel } from '@models/signup-form.model';
+import { ChangePasswordFormModel } from '@models/change-password-form.model';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({ providedIn: 'root' })

@@ -1,7 +1,7 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DateTimePipe} from '../common/pipes/date-time.pipe';
-import {Story} from '../models/story.model';
+import {DateTimePipe} from '@pipes/date-time.pipe';
+import {Story} from '@models/story.model';
 import {ActivatedRoute} from '@angular/router';
 import {map} from 'rxjs';
 import {ButtonComponent} from '../common/components';

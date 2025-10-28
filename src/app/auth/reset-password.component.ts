@@ -2,7 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Card, ButtonComponent, InputComponent } from '../common/components';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '@services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {Card, ButtonComponent} from '../common/components';
 import {Store} from '@ngrx/store';
 import {UserActions} from '../state';
-import {LocalStorageService} from '../services/local-storage.service';
+import {LocalStorageService} from '@services/local-storage.service';
 
 @Component({
   standalone: true,

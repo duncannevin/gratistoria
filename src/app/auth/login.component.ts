@@ -5,7 +5,7 @@ import {Card, ButtonComponent, InputComponent} from '../common/components';
 import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {UserActions} from '../state';
-import {LoginResponseModel} from '../models/login-response.model';
+import {LoginResponseModel} from '@models/login-response.model';
 
 @Component({
   standalone: true,

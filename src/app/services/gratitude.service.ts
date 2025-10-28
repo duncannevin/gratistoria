@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '@env/environment';
 import moment from 'moment';
 import { BehaviorSubject, catchError, map, Observable, of, take, tap } from 'rxjs';
-import { Gratitude } from '../models/gratitude.model';
+import { Gratitude } from '@models/gratitude.model';
 
 @Injectable({
   providedIn: 'root'

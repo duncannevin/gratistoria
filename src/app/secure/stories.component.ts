@@ -1,6 +1,6 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Story} from '../models/story.model';
+import {Story} from '@models/story.model';
 import {Card, StoryCardComponent, PulseCardComponent} from '../common/components';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
