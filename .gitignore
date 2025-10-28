@@ -40,3 +40,8 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# infra
+*.template.yaml
+/.env
+cdk.out
