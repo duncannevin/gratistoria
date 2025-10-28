@@ -1,8 +1,7 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Card} from '../common/components/card.component';
+import {Card, DiaryCardComponent} from '../common/components';
 import {Gratitude} from '../models/gratitude.model';
-import {DiaryCardComponent} from '../common/components/diary-card.component';
 import {Observable, of} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';

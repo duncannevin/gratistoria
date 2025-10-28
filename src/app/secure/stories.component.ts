@@ -1,9 +1,7 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Story} from '../models/story.model';
-import {Card} from '../common/components/card.component';
-import {StoryCardComponent} from '../common/components/story-card.component';
-import {PulseCardComponent} from '../common/components/pulse-card.component';
+import {Card, StoryCardComponent, PulseCardComponent} from '../common/components';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {StoryActions, selectStoryErrorAll, selectStoryLoadingAll, selectStories} from '../state';

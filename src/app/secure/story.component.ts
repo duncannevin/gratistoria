@@ -4,7 +4,7 @@ import {DateTimePipe} from '../common/pipes/date-time.pipe';
 import {Story} from '../models/story.model';
 import {ActivatedRoute} from '@angular/router';
 import {map} from 'rxjs';
-import {ButtonComponent} from '../common/components/button.component';
+import {ButtonComponent} from '../common/components';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
 import {StoryPageActions, selectStoryPageError, selectStoryPageLoading, selectStory} from '../state';

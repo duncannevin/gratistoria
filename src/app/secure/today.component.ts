@@ -1,11 +1,8 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Card} from '../common/components/card.component';
-import {ButtonComponent} from '../common/components/button.component';
-import {InputComponent} from '../common/components/input.component';
+import {Card, ButtonComponent, InputComponent, PulseCardComponent} from '../common/components';
 import {DateTimePipe} from '../common/pipes/date-time.pipe';
-import {PulseCardComponent} from '../common/components/pulse-card.component';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {DiaryActions, TodayActions, selectDiaryCreating, selectToday, selectTodayError, selectTodayLoading} from '../state';
