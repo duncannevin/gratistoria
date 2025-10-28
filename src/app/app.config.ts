@@ -4,11 +4,11 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideState } from '@ngrx/store';
-import { diaryFeature, DiaryEffects, todayFeature, TodayEffects, storyFeature, StoryEffects, storyPageFeature, StoryPageEffects, userFeature, UserEffects, overlayFeature } from './state';
+import { diaryFeature, DiaryEffects, todayFeature, TodayEffects, storyFeature, StoryEffects, storyPageFeature, StoryPageEffects, userFeature, UserEffects, overlayFeature } from '@state';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from './services/auth.interceptor';
+import { authInterceptor } from '@services/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -1,5 +1,5 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { Gratitude } from '../../models/gratitude.model';
+import { Gratitude } from '@models/gratitude.model';
 import { DiaryActions } from './gratitude.actions';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 

@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { UserActions } from './user.actions';
-import { UserModel } from '../../models/user.model';
+import { UserModel } from '@models/user.model';
 
 export interface UserState {
   user: UserModel | null;

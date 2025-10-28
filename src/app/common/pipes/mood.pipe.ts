@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {MOODS} from '../../models/mood.model';
+import {MOODS} from '@models/mood.model';
 import {Mood} from '../enums/mood.enum';
 
 @Pipe({

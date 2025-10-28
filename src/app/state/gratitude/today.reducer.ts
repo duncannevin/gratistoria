@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { TodayActions } from './today.actions';
-import { Gratitude } from '../../models/gratitude.model';
+import { Gratitude } from '@models/gratitude.model';
 
 export interface TodayState {
   entry: Gratitude | null;

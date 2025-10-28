@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { DiaryActions } from './gratitude.actions';
-import { GratitudeService } from '../../services/gratitude.service';
+import { GratitudeService } from '@services/gratitude.service';
 import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { TodayActions } from './today.actions';
 import { Store } from '@ngrx/store';

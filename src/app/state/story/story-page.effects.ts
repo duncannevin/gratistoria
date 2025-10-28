@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { StoryPageActions } from './story-page.actions';
-import { StoryService } from '../../services/story.service';
+import { StoryService } from '@services/story.service';
 import { catchError, map, of, switchMap } from 'rxjs';
 
 @Injectable()

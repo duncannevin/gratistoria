@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Card} from './card.component';
-import {DateTimePipe} from '../pipes/date-time.pipe';
-import {Gratitude} from '../../models/gratitude.model';
+import {DateTimePipe} from '@pipes/date-time.pipe';
+import {Gratitude} from '@models/gratitude.model';
 import {CalendarIcon, LucideAngularModule} from 'lucide-angular';
 
 @Component({
