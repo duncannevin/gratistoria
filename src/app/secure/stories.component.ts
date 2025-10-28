@@ -6,7 +6,7 @@ import {StoryCardComponent} from '../common/components/story-card.component';
 import {PulseCardComponent} from '../common/components/pulse-card.component';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {StoryActions, selectErrorAll, selectLoadingAll, selectStories} from '../state/story';
+import {StoryActions, selectErrorAll, selectLoadingAll, selectStories} from '../state';
 
 @Component({
   standalone: true,

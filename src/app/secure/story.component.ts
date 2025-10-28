@@ -7,7 +7,7 @@ import {map} from 'rxjs';
 import {ButtonComponent} from '../common/components/button.component';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
-import {StoryPageActions, selectError, selectLoading, selectStory} from '../state/story';
+import {StoryPageActions, selectError, selectLoading, selectStory} from '../state';
 
 @Component({
   standalone: true,

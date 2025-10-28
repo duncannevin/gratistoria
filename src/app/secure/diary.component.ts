@@ -6,7 +6,7 @@ import {DiaryCardComponent} from '../common/components/diary-card.component';
 import {Observable, of} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {DiaryActions, selectErrorAll, selectHasMore, selectItems, selectLoadingAll, selectLoadingMore} from '../state/gratitude';
+import {DiaryActions, selectErrorAll, selectHasMore, selectItems, selectLoadingAll, selectLoadingMore} from '../state';
 import {BookIcon, LucideAngularModule} from 'lucide-angular';
 
 @Component({

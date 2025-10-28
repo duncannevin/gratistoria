@@ -8,7 +8,7 @@ import {DateTimePipe} from '../common/pipes/date-time.pipe';
 import {PulseCardComponent} from '../common/components/pulse-card.component';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {DiaryActions, selectCreating, TodayActions, selectError, selectLoading, selectToday} from '../state/gratitude';
+import {DiaryActions, selectCreating, TodayActions, selectError, selectLoading, selectToday} from '../state';
 import moment from 'moment';
 
 @Component({
