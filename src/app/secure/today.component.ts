@@ -13,7 +13,7 @@ import {DiaryActions} from '../state/gratitude.actions';
 import {selectCreating} from '../state/gratitude.selectors';
 import {TodayActions} from '../state/today.actions';
 import {selectError, selectLoading, selectToday} from '../state/today.selectors';
-import dayjs from 'dayjs';
+import moment from 'moment';
 
 @Component({
   standalone: true,
@@ -116,7 +116,7 @@ import dayjs from 'dayjs';
 export class TodayComponent {
   private store = inject(Store);
   private fb = inject(FormBuilder);
-  readonly today = dayjs().toDate();
+  readonly today = moment().toDate();
 
   private todaySel = toSignal(this.store.select(selectToday), { initialValue: null });
   private loadingTodaySel = toSignal(this.store.select(selectLoading), { initialValue: true });

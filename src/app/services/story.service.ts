@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import {Story} from '../models/story.model';
 import {delay, map, Observable, of} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class StoryService {
-  /** Returns YYYY-MM-DD for `daysAgo` in LOCAL time using dayjs */
+  /** Returns YYYY-MM-DD for `daysAgo` in LOCAL time using moment */
   private dayString(daysAgo = 0) {
-    return dayjs().subtract(daysAgo, 'day').format('YYYY-MM-DD');
+    return moment().subtract(daysAgo, 'day').format('YYYY-MM-DD');
   }
 
   // --- stories -------------------------------------------------------------

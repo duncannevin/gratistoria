@@ -1,5 +1,6 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {DateTimePipe} from '../common/pipes/date-time.pipe';
 import {Story} from '../models/story.model';
 import {ActivatedRoute} from '@angular/router';
 import {map} from 'rxjs';
@@ -12,7 +13,7 @@ import {selectError, selectLoading, selectStory} from '../state/story-page.selec
 @Component({
   standalone: true,
   selector: 'app-story',
-  imports: [ButtonComponent, CommonModule],
+  imports: [ButtonComponent, CommonModule, DateTimePipe],
   template: `
     <!-- Loading -->
     <ng-container *ngIf="loading(); else notLoading">
@@ -78,7 +79,7 @@ import {selectError, selectLoading, selectStory} from '../state/story-page.selec
                       <line x1="8" y1="2" x2="8" y2="6"></line>
                       <line x1="3" y1="10" x2="21" y2="10"></line>
                     </svg>
-                    <span>{{ value()?.date | date:'EEEE, MMMM d, y' }}</span>
+                    <span>{{ value()?.date | appDateTime: 'dddd, MMMM D, YYYY' }}</span>
                   </div>
                   <div class="flex items-center gap-2">
                     <!-- Users icon -->

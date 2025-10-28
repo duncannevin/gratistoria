@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import dayjs from 'dayjs';
+import moment from 'moment';
 
 @Pipe({
   name: 'appDateTime',
@@ -12,10 +12,9 @@ export class DateTimePipe implements PipeTransform {
   ): string {
     if (value === null || value === undefined || value === '') return '';
 
-    const d = dayjs(value);
-    if (!d.isValid()) return '';
+    const m = moment(value as any);
+    if (!m.isValid()) return '';
 
-    return d.format(format);
+    return m.format(format);
   }
 }
-
