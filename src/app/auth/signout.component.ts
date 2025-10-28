@@ -34,6 +34,12 @@ export class SignOutComponent implements OnInit {
   private localStorageService = inject(LocalStorageService);
 
   ngOnInit() {
-    this.store.dispatch(UserActions.logoutStart());
+    const token = this.localStorageService.getItem<string>('token');
+    if (token) {
+      this.store.dispatch(UserActions.logoutStart());
+    } else {
+      // No token present, just dispatch a plain logout
+      this.store.dispatch(UserActions.logout());
+    }
   }
 }

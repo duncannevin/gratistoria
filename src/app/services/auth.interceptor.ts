@@ -26,7 +26,8 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
       const httpErr = err as HttpErrorResponse;
       const isAuthError = httpErr.status === 401 || httpErr.status === 403;
       const isRefreshCall = authReq.url.includes('/refresh-token');
-      if (!isAuthError || isRefreshCall) {
+      const isLogoutCall = authReq.url.includes('/logout');
+      if (!isAuthError || isRefreshCall || isLogoutCall) {
         return throwError(() => err);
       }
 
@@ -68,4 +69,3 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
     })
   );
 };
-

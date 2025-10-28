@@ -4,20 +4,16 @@ import { Store } from '@ngrx/store';
 import { UserActions } from './state/user.actions';
 import { selectResolved } from './state/user.selectors';
 import { selectVisible, selectMessage } from './state/overlay.selectors';
+import { OverlayComponent } from './common/components/overlay.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { LocalStorageService } from './services/local-storage.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, OverlayComponent],
   template: `
     @if (overlayVisible()) {
-      <div class="min-h-screen flex items-center justify-center">
-        <div class="text-center text-muted-foreground">
-          <div class="text-3xl mb-3">✨</div>
-          <div>{{ overlayMessage() || 'Loading your experience...' }}</div>
-        </div>
-      </div>
+      <app-overlay></app-overlay>
     } @else {
       <router-outlet></router-outlet>
     }

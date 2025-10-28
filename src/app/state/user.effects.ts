@@ -8,6 +8,7 @@ import { LoginResponseModel } from '../models/login-response.model';
 import { UserModel } from '../models/user.model';
 import { Router } from '@angular/router';
 import { OverlayActions } from './overlay.actions';
+import {LocalStorageService} from '../services/local-storage.service';
 
 @Injectable()
 export class UserEffects {
@@ -15,6 +16,7 @@ export class UserEffects {
   private readonly auth = inject(AuthService);
   private readonly users = inject(UserService);
   private readonly router = inject(Router);
+  private readonly localStorage = inject(LocalStorageService);
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -53,21 +55,35 @@ export class UserEffects {
   getUserOverlayShow$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.login),
-      map(() => OverlayActions.show({ message: 'Loading your experience...' }))
+      map(() => OverlayActions.show({ message: 'Logging you in...', icon: '🔐' }))
     )
   );
 
   getLogoutOverlayShow$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.logoutStart),
-      map(() => OverlayActions.show({ message: 'Logging you out...' }))
+      map(() => OverlayActions.show({ message: 'Signing you out...', icon: '🚪' }))
     ),
   );
 
-  // Hide overlay when user fetch completes
+  // After login success, change overlay to loading experience while profile fetch happens
+  loginSuccessOverlaySet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.loginSuccess),
+      map(() => OverlayActions.show({ message: 'Loading your experience...', icon: '✨' }))
+    )
+  );
+
+  // Hide overlay when user fetch completes or fails, or logout completes/fails
   getUserOverlayHide$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.loginFailure, UserActions.loginSuccess, UserActions.logout, UserActions.logoutFailure),
+      ofType(
+        UserActions.loginFailure,
+        UserActions.getUserSuccess,
+        UserActions.getUserFailure,
+        UserActions.logout,
+        UserActions.logoutFailure,
+      ),
       map(() => OverlayActions.hide())
     )
   );
@@ -94,9 +110,9 @@ export class UserEffects {
         ofType(UserActions.getUserFailure),
         tap(() => {
           const url = this.router.url || '';
-          if (url.startsWith('/s')) {
-            this.router.navigateByUrl('/auth');
-          }
+          this.localStorage.removeItem('token');
+          this.localStorage.removeItem('idToken');
+          this.router.navigateByUrl('/auth');
         }),
       ),
     { dispatch: false }
@@ -108,8 +124,9 @@ export class UserEffects {
       ofType(UserActions.logoutStart),
       switchMap(() =>
         this.auth.logout().pipe(
+          // Always proceed to client-side logout regardless of API result
           map(() => UserActions.logout()),
-          catchError((err) => of(UserActions.logoutFailure({ error: err?.message || 'Logout failed' }))),
+          catchError(() => of(UserActions.logout())),
         )
       )
     )
@@ -120,6 +137,19 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(UserActions.logout),
         tap(() => this.router.navigateByUrl('/auth/login')),
+      ),
+    { dispatch: false }
+  );
+
+  // Ensure tokens are cleared even if logout fails
+  logoutClearTokens$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(UserActions.logout),
+        tap(() => {
+          this.localStorage.removeItem('token');
+          this.localStorage.removeItem('idToken');
+        }),
       ),
     { dispatch: false }
   );

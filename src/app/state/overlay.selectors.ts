@@ -4,5 +4,5 @@ export const {
   selectOverlayState,
   selectVisible,
   selectMessage,
+  selectIcon,
 } = overlayFeature;
-
