@@ -1,7 +1,7 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
-import {ButtonComponent, UrlButtonComponent} from '../common/components';
+import {ButtonComponent, UrlButtonComponent} from '@components';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {Store} from '@ngrx/store';
 import {selectUser} from '@state';

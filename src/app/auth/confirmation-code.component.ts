@@ -1,7 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import {Card, ButtonComponent, InputComponent} from '../common/components';
+import {Card, ButtonComponent, InputComponent} from '@components';
 import {AuthService} from '@services/auth.service';
 import {Router} from '@angular/router';
 

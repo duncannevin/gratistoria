@@ -1,8 +1,7 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Card, DiaryCardComponent} from '../common/components';
+import {Card, DiaryCardComponent} from '@components';
 import {Gratitude} from '@models/gratitude.model';
-import {Observable, of} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {DiaryActions, selectDiaryErrorAll, selectDiaryHasMore, selectDiaryItems, selectDiaryLoadingAll, selectDiaryLoadingMore} from '@state';

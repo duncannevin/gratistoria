@@ -1,7 +1,7 @@
 import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Card, ButtonComponent, InputComponent, PulseCardComponent} from '../common/components';
+import {Card, ButtonComponent, InputComponent, PulseCardComponent} from '@components';
 import {DateTimePipe} from '@pipes/date-time.pipe';
 import {Store} from '@ngrx/store';
 import {toSignal} from '@angular/core/rxjs-interop';
