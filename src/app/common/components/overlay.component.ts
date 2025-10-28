@@ -10,7 +10,7 @@ import { selectMessage, selectVisible, selectIcon } from '../../state';
     @if (visible()) {
       <div class="min-h-screen flex items-center justify-center">
         <div class="text-center text-muted-foreground">
-          <div class="text-3xl mb-3">{{ icon() || '✨' }}</div>
+              <div class="text-3xl mb-3">{{ icon() || '💖' }}</div>
           <div>{{ message() || 'Loading your experience...' }}</div>
         </div>
       </div>
